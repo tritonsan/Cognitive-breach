@@ -1,0 +1,140 @@
+# ============================================================
+# COGNITIVE BREACH - PUBLIC DEPLOYMENT .gitignore
+# ============================================================
+# Purpose: Protect secrets while showcasing AI testing logs
+# ============================================================
+
+# ==================== SECRETS (BLOCK) ====================
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Streamlit secrets
+.streamlit/secrets.toml
+.streamlit/config.toml
+
+# API Keys and credentials
+**/secrets.toml
+**/*secret*
+**/*credential*
+**/*key*.json
+google_creds.json
+service_account.json
+
+# ==================== PYTHON CACHE (BLOCK) ====================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environments
+venv/
+.venv/
+ENV/
+env/
+env.bak/
+venv.bak/
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Unit test / coverage
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+
+# ==================== IDE (BLOCK) ====================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# ==================== SYSTEM (BLOCK) ====================
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Windows
+nul
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.backup
+
+# ==================== DATA (SELECTIVE) ====================
+# Block user memory for fresh start on cloud
+data/memory.json
+data/memory.backup.json
+
+# Keep evidence manifest and generated images
+!data/evidence_manifest.json
+!data/*.png
+!data/*.jpg
+!data/*.jpeg
+
+# ==================== LOGS (ALLOW - HACKATHON SHOWCASE) ====================
+# IMPORTANT: We WANT judges to see these!
+# These logs prove our autonomous testing methodology
+!logs/
+!logs/**/*.md
+!logs/**/*.json
+!logs/**/*.log
+
+# BUT block audio files (too large for git)
+logs/**/*.mp3
+logs/**/*.wav
+
+# ==================== ASSETS (ALLOW) ====================
+# Keep all UI assets
+!assets/
+!assets/**/*
+
+# ==================== DOCUMENTATION (ALLOW) ====================
+# Keep all documentation for judges
+!*.md
+!CLAUDE.md
+!plan.md
+!ROADMAP.md
+!README.md
+
+# ==================== HACKATHON DOCS (ALLOW) ====================
+!Hackathon Docs/
+!Hackathon Docs/**/*
+
+# ==================== SCREENSHOTS (ALLOW) ====================
+# Keep screenshots for documentation
+!Screenshot*.png
+
+# ==================== MISC ====================
+# Jupyter
+.ipynb_checkpoints
+*.ipynb
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Logs (general)
+*.log
+!logs/*.log  # Exception: we want logs/ directory logs
+pip-log.txt
+pip-delete-this-directory.txt

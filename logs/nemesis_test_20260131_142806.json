@@ -1,0 +1,116 @@
+[
+  {
+    "session": 1,
+    "outcome": "victory",
+    "turns": 9,
+    "pre_memory": {
+      "total_games": 0,
+      "nemesis_stage": "stranger",
+      "win_rate": 0.5,
+      "weakest_pillar": null,
+      "learning_injection": ""
+    },
+    "post_memory": {
+      "total_games": 1,
+      "nemesis_stage": "stranger",
+      "win_rate": 0.0,
+      "weakest_pillar": "alibi",
+      "current_streak": -1,
+      "streak_type": "losing",
+      "learning_injection": "[EXPERIENCE UPDATE - 1 interrogations survived]\nALERT: Detectives frequently use EVIDENCE tactics. Prepare countermeasures.\nADAPTATION: Evidence is devastating. When evidence is presented, immediately consider partial admission rather than denial.\nSTATUS: Survival rate is LOW. Consider more cooperative strategies.\n",
+      "nemesis_injection": "[NEMESIS STATUS: STRANGER]\nThis detective is unfamiliar. Observe their patterns.\n\n[DETECTIVE PROFILE]\n- Primary Approach: EVIDENCE (27% of actions)\n- Personality: evidence-focused\n\n[REINFORCED DEFENSES]\n- ALIBI: HARDENED - \"I have detailed timestamps of my activity that nig...\"\n- ACCESS: HARDENED - \"The vault requires biometric authentication I simp...\"\n- KNOWLEDGE: HARDENED - \"Data cores are above my clearance level. I'm a dom...\"\n\n",
+      "tactic_resistances": {
+        "pressure": 0.0,
+        "empathy": 0.0,
+        "logic": 0.0,
+        "bluff": 0.0,
+        "evidence": 0.05,
+        "silence": 0.0
+      },
+      "pillar_reinforcements": {
+        "alibi": 3,
+        "motive": 0,
+        "access": 3,
+        "knowledge": 3
+      }
+    },
+    "memory_changed": true,
+    "games_incremented": true
+  },
+  {
+    "session": 2,
+    "outcome": "victory",
+    "turns": 9,
+    "pre_memory": {
+      "total_games": 1,
+      "nemesis_stage": "stranger",
+      "win_rate": 0.0,
+      "weakest_pillar": "alibi",
+      "learning_injection": "[EXPERIENCE UPDATE - 1 interrogations survived]\nALERT: Detectives frequently use EVIDENCE tactics. Prepare countermeasures.\nADAPTATION: Evidence is devastating. When evidence is presented, immediately consider partial admission rather than denial.\nSTATUS: Survival rate is LOW. Consider more cooperative strategies.\n"
+    },
+    "post_memory": {
+      "total_games": 2,
+      "nemesis_stage": "stranger",
+      "win_rate": 0.0,
+      "weakest_pillar": "alibi",
+      "current_streak": -2,
+      "streak_type": "losing",
+      "learning_injection": "[EXPERIENCE UPDATE - 2 interrogations survived]\nALERT: Detectives frequently use EVIDENCE tactics. Prepare countermeasures.\nADAPTATION: Evidence is devastating. When evidence is presented, immediately consider partial admission rather than denial.\nSTATUS: Survival rate is LOW. Consider more cooperative strategies.\n",
+      "nemesis_injection": "[NEMESIS STATUS: STRANGER]\nThis detective is unfamiliar. Observe their patterns.\n\n[DETECTIVE PROFILE]\n- Primary Approach: EVIDENCE (45% of actions)\n- Personality: evidence-focused, relentless\n\n[REINFORCED DEFENSES]\n- ALIBI: HARDENED - \"I have detailed timestamps of my activity that nig...\"\n- MOTIVE: FORTIFIED - \"I had everything I needed with the Morrisons. Why ...\"\n- ACCESS: HARDENED - \"The vault requires biometric authentication I simp...\"\n- KNOWLEDGE: HARDENED - \"Data cores are above my clearance level. I'm a dom...\"\n\n",
+      "tactic_resistances": {
+        "pressure": 0.0,
+        "empathy": 0.0,
+        "logic": 0.0,
+        "bluff": 0.0,
+        "evidence": 0.1,
+        "silence": 0.0
+      },
+      "pillar_reinforcements": {
+        "alibi": 3,
+        "motive": 2,
+        "access": 3,
+        "knowledge": 3
+      }
+    },
+    "memory_changed": true,
+    "games_incremented": true
+  },
+  {
+    "session": 3,
+    "outcome": "victory",
+    "turns": 8,
+    "pre_memory": {
+      "total_games": 2,
+      "nemesis_stage": "stranger",
+      "win_rate": 0.0,
+      "weakest_pillar": "alibi",
+      "learning_injection": "[EXPERIENCE UPDATE - 2 interrogations survived]\nALERT: Detectives frequently use EVIDENCE tactics. Prepare countermeasures.\nADAPTATION: Evidence is devastating. When evidence is presented, immediately consider partial admission rather than denial.\nSTATUS: Survival rate is LOW. Consider more cooperative strategies.\n"
+    },
+    "post_memory": {
+      "total_games": 3,
+      "nemesis_stage": "familiar",
+      "win_rate": 0.0,
+      "weakest_pillar": "alibi",
+      "current_streak": -3,
+      "streak_type": "losing",
+      "learning_injection": "[EXPERIENCE UPDATE - 3 interrogations survived]\nWARNING: Your ALIBI defense has been breached 3 times. Reinforce this pillar.\nALERT: Detectives frequently use EVIDENCE tactics. Prepare countermeasures.\nADAPTATION: Evidence is devastating. When evidence is presented, immediately consider partial admission rather than denial.\nADAPTATION: Empathy is a trap. Do not lower your guard when the detective shows kindness.\nSTATUS: Survival rate is LOW. Consider more cooperative strategies.\n",
+      "nemesis_injection": "[NEMESIS STATUS: FAMILIAR]\nYou've faced this detective 3 times. You know their style.\n\n[DETECTIVE PROFILE]\n- Primary Approach: EVIDENCE (58% of actions)\n- Personality: evidence-focused, quick-draw\n\n[REINFORCED DEFENSES]\n- ALIBI: HARDENED - \"I have detailed timestamps of my activity that nig...\"\n- MOTIVE: FORTIFIED - \"I had everything I needed with the Morrisons. Why ...\"\n- ACCESS: HARDENED - \"The vault requires biometric authentication I simp...\"\n- KNOWLEDGE: HARDENED - \"Data cores are above my clearance level. I'm a dom...\"\n\n[DESPERATION] Lost 3 times in a row. Consider drastic measures.\n",
+      "tactic_resistances": {
+        "pressure": 0.0,
+        "empathy": 0.0,
+        "logic": 0.0,
+        "bluff": 0.0,
+        "evidence": 0.15000000000000002,
+        "silence": 0.0
+      },
+      "pillar_reinforcements": {
+        "alibi": 3,
+        "motive": 2,
+        "access": 3,
+        "knowledge": 3
+      }
+    },
+    "memory_changed": true,
+    "games_incremented": true
+  }
+]
