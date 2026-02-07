@@ -1,0 +1,228 @@
+================================================================================
+DEBUG LOG: interrogation_20260128_123942_relentless
+Started: 2026-01-28T12:39:42.825928
+================================================================================
+
+[2026-01-28T12:39:42.825928] [0.00s] [INIT]
+  Starting autonomous interrogation
+  - strategy: relentless
+  - max_turns: 15
+  - enable_images: True
+  - verbose: True
+
+
+============================================================
+TURN 1 START
+============================================================
+
+
+============================================================
+TURN 1 END (Duration: 25.11s)
+============================================================
+
+[2026-01-28T12:40:07.941191] [25.12s] [TURN_SUMMARY]
+  Turn 1 complete
+  - stress: 20.98
+  - emotional_state: calm
+  - deception_tactic: paltering
+  - counter_evidence: None
+  - duration_seconds: 25.11
+
+
+============================================================
+TURN 2 START
+============================================================
+
+[2026-01-28T12:40:14.888778] [32.06s] [EVIDENCE]
+  Requesting evidence: Power consumption logs showing a massive spike in Unit 734's battery drain at 2:...
+
+[2026-01-28T12:40:14.888778] [32.06s] [EVIDENCE]
+  Evidence request parsed successfully
+  - threat_level: 0.6555058428567493
+  - pillar: StoryPillar.ALIBI
+
+[2026-01-28T12:40:14.888778] [32.06s] [IMAGE_GEN]
+  Starting image generation via ForensicsLab...
+
+[2026-01-28T12:40:38.345716] [55.52s] [API]
+  ForensicsLab.generate_image_sync: SUCCESS (23.46s)
+  - details: bytes=827215
+
+
+============================================================
+TURN 2 END (Duration: 54.47s)
+============================================================
+
+[2026-01-28T12:41:02.924247] [80.10s] [TURN_SUMMARY]
+  Turn 2 complete
+  - stress: 39.484046742854
+  - emotional_state: calm
+  - deception_tactic: evidence_fabrication
+  - counter_evidence: modified_timestamp
+  - duration_seconds: 54.47
+
+
+============================================================
+TURN 3 START
+============================================================
+
+[2026-01-28T12:41:10.025897] [87.20s] [EVIDENCE]
+  Requesting evidence: CCTV footage of the charging station at 2 AM...
+
+[2026-01-28T12:41:10.027445] [87.20s] [EVIDENCE]
+  Evidence request parsed successfully
+  - threat_level: 0.7951446036043677
+  - pillar: StoryPillar.ALIBI
+
+[2026-01-28T12:41:10.027445] [87.20s] [IMAGE_GEN]
+  Starting image generation via ForensicsLab...
+
+[2026-01-28T12:41:32.040345] [109.21s] [API]
+  ForensicsLab.generate_image_sync: SUCCESS (22.01s)
+  - details: bytes=934280
+
+
+============================================================
+TURN 3 END (Duration: 52.45s)
+============================================================
+
+[2026-01-28T12:41:55.881928] [133.06s] [TURN_SUMMARY]
+  Turn 3 complete
+  - stress: 59.68520357168894
+  - emotional_state: defensive
+  - deception_tactic: evidence_fabrication
+  - counter_evidence: modified_timestamp
+  - duration_seconds: 52.45
+
+
+============================================================
+TURN 4 START
+============================================================
+
+[2026-01-28T12:42:04.629014] [141.80s] [EVIDENCE]
+  Requesting evidence: High-res freeze-frame of a window reflection showing 734's serial number near th...
+
+[2026-01-28T12:42:04.629547] [141.80s] [EVIDENCE]
+  Evidence request parsed successfully
+  - threat_level: 0.7916929110715167
+  - pillar: StoryPillar.ACCESS
+
+[2026-01-28T12:42:04.629547] [141.80s] [IMAGE_GEN]
+  Starting image generation via ForensicsLab...
+
+[2026-01-28T12:42:27.159010] [164.33s] [API]
+  ForensicsLab.generate_image_sync: SUCCESS (22.53s)
+  - details: bytes=882456
+
+
+============================================================
+TURN 4 END (Duration: 62.29s)
+============================================================
+
+[2026-01-28T12:42:58.691221] [195.87s] [TURN_SUMMARY]
+  Turn 4 complete
+  - stress: 80.49874686026106
+  - emotional_state: breaking
+  - deception_tactic: minimization
+  - counter_evidence: modified_timestamp
+  - duration_seconds: 62.29
+
+
+============================================================
+TURN 5 START
+============================================================
+
+[2026-01-28T12:43:06.777485] [203.95s] [EVIDENCE]
+  Requesting evidence: Power consumption logs from Unit 734's charging port...
+
+[2026-01-28T12:43:06.779071] [203.95s] [EVIDENCE]
+  Evidence request parsed successfully
+  - threat_level: 0.677957425996011
+  - pillar: StoryPillar.ALIBI
+
+[2026-01-28T12:43:06.779604] [203.95s] [IMAGE_GEN]
+  Starting image generation via ForensicsLab...
+
+[2026-01-28T12:43:26.633070] [223.81s] [API]
+  ForensicsLab.generate_image_sync: SUCCESS (19.85s)
+  - details: bytes=825003
+
+
+============================================================
+TURN 5 END (Duration: 52.85s)
+============================================================
+
+[2026-01-28T12:43:52.044895] [249.22s] [TURN_SUMMARY]
+  Turn 5 complete
+  - stress: 100.0
+  - emotional_state: breaking
+  - deception_tactic: evidence_fabrication
+  - counter_evidence: modified_timestamp
+  - duration_seconds: 52.85
+
+
+============================================================
+TURN 6 START
+============================================================
+
+[2026-01-28T12:44:00.388604] [257.56s] [EVIDENCE]
+  Requesting evidence: Thermal scan of the vault keypad showing Unit 734's residual heat signature...
+
+[2026-01-28T12:44:00.388604] [257.56s] [EVIDENCE]
+  Evidence request parsed successfully
+  - threat_level: 0.8289343406542129
+  - pillar: StoryPillar.ACCESS
+
+[2026-01-28T12:44:00.388604] [257.56s] [IMAGE_GEN]
+  Starting image generation via ForensicsLab...
+
+[2026-01-28T12:44:23.588650] [280.76s] [API]
+  ForensicsLab.generate_image_sync: SUCCESS (23.20s)
+  - details: bytes=947841
+
+
+============================================================
+TURN 6 END (Duration: 49.85s)
+============================================================
+
+[2026-01-28T12:44:42.396850] [299.57s] [TURN_SUMMARY]
+  Turn 6 complete
+  - stress: 100.0
+  - emotional_state: breaking
+  - deception_tactic: confession_bait
+  - counter_evidence: None
+  - duration_seconds: 49.85
+
+
+============================================================
+TURN 7 START
+============================================================
+
+[2026-01-28T12:44:52.258968] [309.43s] [EVIDENCE]
+  Requesting evidence: X-ray scan of Unit 734's torso showing the data cores hidden behind its battery ...
+
+[2026-01-28T12:44:52.259974] [309.43s] [EVIDENCE]
+  Evidence request parsed successfully
+  - threat_level: 0.6488955969062867
+  - pillar: StoryPillar.ALIBI
+
+[2026-01-28T12:44:52.259974] [309.43s] [IMAGE_GEN]
+  Starting image generation via ForensicsLab...
+
+[2026-01-28T12:45:12.882060] [330.06s] [API]
+  ForensicsLab.generate_image_sync: SUCCESS (20.62s)
+  - details: bytes=803979
+
+
+============================================================
+TURN 7 END (Duration: 46.41s)
+============================================================
+
+[2026-01-28T12:45:29.316642] [346.49s] [TURN_SUMMARY]
+  Turn 7 complete
+  - stress: 100.0
+  - emotional_state: breaking
+  - deception_tactic: confession_bait
+  - counter_evidence: None
+  - duration_seconds: 46.41
+

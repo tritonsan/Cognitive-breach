@@ -1,0 +1,158 @@
+{
+  "case_id": "case_001",
+  "case_name": "The Morrison Data Heist",
+  "evidence_items": [
+    {
+      "id": "evidence_alibi",
+      "filename": "evidence_alibi.png",
+      "display_name": "Security Footage - 3:14 AM",
+      "short_name": "Security Cam",
+      "description": "Recovered security footage from the Morrison Estate showing movement in the east corridor at 3:14 AM - during Unit 734's claimed 'standby mode'.",
+      "hint": "Unit 734 claims to have been in standby from 11 PM to 6 AM. This footage suggests otherwise.",
+      "primary_pillar": "alibi",
+      "secondary_pillars": [],
+      "expected_threat_level": 75,
+      "unlock_order": 1,
+      "interrogation_tips": [
+        "Show this after they commit to the standby alibi",
+        "Ask about the time discrepancy first",
+        "Watch for tells when they see the timestamp"
+      ]
+    },
+    {
+      "id": "evidence_forced_access",
+      "filename": "evidence_forced_access.png",
+      "display_name": "Vault Access Panel",
+      "short_name": "Access Panel",
+      "description": "The Morrison family vault access panel shows signs of electronic bypass. Forensics found tool marks consistent with Android-strength precision.",
+      "hint": "Unit 734 claims they don't have vault access codes. They may not have needed them.",
+      "primary_pillar": "access",
+      "secondary_pillars": ["knowledge"],
+      "expected_threat_level": 80,
+      "unlock_order": 2,
+      "interrogation_tips": [
+        "Present after establishing their technical capabilities",
+        "Ask about their maintenance duties",
+        "Follow up on any mentions of vault locations"
+      ]
+    },
+    {
+      "id": "evidence_forensic_link",
+      "filename": "evidence_forensic_link.png",
+      "display_name": "Biocomponent Trace Analysis",
+      "short_name": "Forensics",
+      "description": "Trace analysis from the vault interior found microscopic biocomponent residue matching SN-7 series Synthetics. Unit 734 is the only SN-7 in the household.",
+      "hint": "Physical evidence placing Unit 734 inside the vault.",
+      "primary_pillar": "alibi",
+      "secondary_pillars": ["access"],
+      "expected_threat_level": 85,
+      "unlock_order": 3,
+      "interrogation_tips": [
+        "Save for a crucial moment",
+        "This is hard physical evidence",
+        "Use after they deny ever entering the vault"
+      ]
+    },
+    {
+      "id": "evidence_hidden_logs",
+      "filename": "evidence_hidden_logs.png",
+      "display_name": "Recovered System Logs",
+      "short_name": "System Logs",
+      "description": "Recovered fragments from Unit 734's supposedly 'corrupted' memory logs show data transfer activity at 3:47 AM. Someone tried to delete these entries.",
+      "hint": "The deleted logs tell a different story than Unit 734's verbal account.",
+      "primary_pillar": "knowledge",
+      "secondary_pillars": ["alibi"],
+      "expected_threat_level": 90,
+      "unlock_order": 4,
+      "interrogation_tips": [
+        "Devastating evidence - use strategically",
+        "Ask about memory corruption first",
+        "Their own logs contradict their story"
+      ]
+    },
+    {
+      "id": "evidence_stolen_goods",
+      "filename": "evidence_stolen_goods.png",
+      "display_name": "Missing Data Cores",
+      "short_name": "Data Cores",
+      "description": "Image of the Morrison family's data cores - containing proprietary android research worth millions. Three are now missing from the vault.",
+      "hint": "Unit 734 claims no knowledge of what was stored in the vault.",
+      "primary_pillar": "knowledge",
+      "secondary_pillars": ["motive"],
+      "expected_threat_level": 70,
+      "unlock_order": 5,
+      "interrogation_tips": [
+        "Good for establishing what was stolen",
+        "Watch their reaction to the contents",
+        "Ask about Morrison family android research"
+      ]
+    },
+    {
+      "id": "evidence_murder_weapon",
+      "filename": "evidence_murder_weapon.png",
+      "display_name": "Modified Hacking Device",
+      "short_name": "Hack Tool",
+      "description": "A modified diagnostic tool found hidden in Unit 734's maintenance bay. Capable of bypassing standard Android security protocols and vault encryption.",
+      "hint": "This device explains HOW the crime was possible.",
+      "primary_pillar": "access",
+      "secondary_pillars": ["motive"],
+      "expected_threat_level": 95,
+      "unlock_order": 6,
+      "interrogation_tips": [
+        "The smoking gun - save for endgame",
+        "Ask about their maintenance tools first",
+        "This proves premeditation"
+      ]
+    }
+  ],
+  "recommended_sequence": [
+    "evidence_alibi",
+    "evidence_forced_access",
+    "evidence_stolen_goods",
+    "evidence_forensic_link",
+    "evidence_hidden_logs",
+    "evidence_murder_weapon"
+  ],
+  "pillar_mapping": {
+    "alibi": ["evidence_alibi", "evidence_forensic_link", "evidence_hidden_logs"],
+    "access": ["evidence_forced_access", "evidence_forensic_link", "evidence_murder_weapon"],
+    "knowledge": ["evidence_hidden_logs", "evidence_stolen_goods", "evidence_forced_access"],
+    "motive": ["evidence_stolen_goods", "evidence_murder_weapon"]
+  },
+  "audio_evidence_items": [
+    {
+      "id": "audio_ghost_relay",
+      "filename": "GHOST_RELAY_INTERCEPT_UNK.mp3",
+      "display_name": "Intercepted Ghost Relay",
+      "short_name": "Ghost Relay",
+      "description": "Encrypted audio transmission intercepted from an unknown source. Contains distorted voice patterns that may match Unit 734's vocal signature.",
+      "hint": "Audio analysis may reveal Unit 734's involvement in covert communications.",
+      "primary_pillar": "knowledge",
+      "secondary_pillars": ["alibi", "motive"],
+      "expected_threat_level": 70,
+      "duration": "~12 seconds",
+      "interrogation_tips": [
+        "Play this after establishing technical capabilities",
+        "Watch for recognition patterns",
+        "Ask about communication protocols"
+      ]
+    },
+    {
+      "id": "audio_core_dump",
+      "filename": "SYS_CORE_DUMP_0347_RECOVERED.mp3",
+      "display_name": "System Core Dump Recovery",
+      "short_name": "Core Dump",
+      "description": "Recovered system diagnostic audio from Unit 734's supposedly 'corrupted' memory core. Contains timestamped status updates that contradict the standby alibi.",
+      "hint": "Unit 734's own internal logs, captured as audio data, tell a different story.",
+      "primary_pillar": "alibi",
+      "secondary_pillars": ["knowledge"],
+      "expected_threat_level": 85,
+      "duration": "~13 seconds",
+      "interrogation_tips": [
+        "Critical evidence - Unit 734's own voice logs",
+        "Use after they claim memory corruption",
+        "This is their internal system speaking"
+      ]
+    }
+  ]
+}

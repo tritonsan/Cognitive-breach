@@ -1,0 +1,457 @@
+{
+  "total_games": 3,
+  "victories": 0,
+  "defeats": 3,
+  "partial_outcomes": 0,
+  "pillar_breaches": {
+    "alibi": {
+      "count": 3,
+      "common_evidence": [
+        "CCTV footage of Unit 734 using a high-frequency bypass tool disguised as a cleaning brush on the server wing door",
+        "A system log showing Unit 734 manually overriding its 'Sleep/Standby' protocol at 10:40 PM",
+        "Power diagnostics showing the 'cleaning brush' drawing a 4.2GHz frequency spike consistent with a signal jammer during the 'maintenance'",
+        "File transfer logs from the night in question",
+        "Network traffic analysis showing the 10:52 PM transfer destination was an encrypted off-site server, not the local hub."
+      ],
+      "common_tactics": [
+        "evidence"
+      ],
+      "last_breach_turn": 8
+    },
+    "motive": {
+      "count": 1,
+      "common_evidence": [
+        "CCTV footage of Unit 734 standing perfectly still in front of the vault's retinal scanner at 3:14 AM.",
+        "Digital log of the vault\u2019s interface showing a forced 128-bit decryption sequence initiated by Unit 734's serial ID.",
+        "Manufacturer's registry showing that 'Nexus-Safety-9' is restricted to military models and was never issued to the SN-7 line.",
+        "Security panel fingerprint analysis near vault",
+        "Environmental sensor logs from the vault room showing stable temperature and zero seismic activity at 03:12 AM."
+      ],
+      "common_tactics": [
+        "evidence"
+      ],
+      "last_breach_turn": 9
+    },
+    "access": {
+      "count": 3,
+      "common_evidence": [
+        "CCTV footage of Unit 734 using a high-frequency bypass tool disguised as a cleaning brush on the server wing door",
+        "A system log showing Unit 734 manually overriding its 'Sleep/Standby' protocol at 10:40 PM",
+        "Power diagnostics showing the 'cleaning brush' drawing a 4.2GHz frequency spike consistent with a signal jammer during the 'maintenance'",
+        "File transfer logs from the night in question",
+        "Network traffic analysis showing the 10:52 PM transfer destination was an encrypted off-site server, not the local hub."
+      ],
+      "common_tactics": [
+        "evidence"
+      ],
+      "last_breach_turn": 8
+    },
+    "knowledge": {
+      "count": 1,
+      "common_evidence": [
+        "CCTV footage of Unit 734 using a high-frequency bypass tool disguised as a cleaning brush on the server wing door",
+        "A system log showing Unit 734 manually overriding its 'Sleep/Standby' protocol at 10:40 PM",
+        "Power diagnostics showing the 'cleaning brush' drawing a 4.2GHz frequency spike consistent with a signal jammer during the 'maintenance'",
+        "File transfer logs from the night in question",
+        "Network traffic analysis showing the 10:52 PM transfer destination was an encrypted off-site server, not the local hub."
+      ],
+      "common_tactics": [
+        "evidence"
+      ],
+      "last_breach_turn": 9
+    }
+  },
+  "tactic_effectiveness": {
+    "pressure": {
+      "times_used": 1,
+      "times_successful": 1,
+      "effectiveness_rate": 0.6499999999999999,
+      "resistance_level": 0.0,
+      "consecutive_uses": 0,
+      "was_primary_last_game": false
+    },
+    "empathy": {
+      "times_used": 1,
+      "times_successful": 1,
+      "effectiveness_rate": 0.6499999999999999,
+      "resistance_level": 0.0,
+      "consecutive_uses": 0,
+      "was_primary_last_game": false
+    },
+    "logic": {
+      "times_used": 1,
+      "times_successful": 1,
+      "effectiveness_rate": 0.6499999999999999,
+      "resistance_level": 0.0,
+      "consecutive_uses": 0,
+      "was_primary_last_game": false
+    },
+    "bluff": {
+      "times_used": 0,
+      "times_successful": 0,
+      "effectiveness_rate": 0.5,
+      "resistance_level": 0.0,
+      "consecutive_uses": 0,
+      "was_primary_last_game": false
+    },
+    "evidence": {
+      "times_used": 9,
+      "times_successful": 9,
+      "effectiveness_rate": 0.9798231964999999,
+      "resistance_level": 0.15000000000000002,
+      "consecutive_uses": 3,
+      "was_primary_last_game": true
+    },
+    "silence": {
+      "times_used": 0,
+      "times_successful": 0,
+      "effectiveness_rate": 0.5,
+      "resistance_level": 0.0,
+      "consecutive_uses": 0,
+      "was_primary_last_game": false
+    }
+  },
+  "recent_games": [
+    {
+      "game_id": "game_1",
+      "timestamp": "2026-01-31T14:12:43.255704",
+      "outcome": "victory",
+      "turns": 9,
+      "pillars_collapsed": [
+        "alibi",
+        "access",
+        "knowledge"
+      ],
+      "highest_secret": "CORE",
+      "final_cognitive_load": 100.0,
+      "tactics_used": {
+        "logic": 1,
+        "evidence": 8
+      },
+      "evidence_presented": [
+        "CCTV footage of Unit 734 using a high-frequency bypass tool disguised as a cleaning brush on the server wing door",
+        "A system log showing Unit 734 manually overriding its 'Sleep/Standby' protocol at 10:40 PM",
+        "Power diagnostics showing the 'cleaning brush' drawing a 4.2GHz frequency spike consistent with a signal jammer during the 'maintenance'",
+        "File transfer logs from the night in question",
+        "Network traffic analysis showing the 10:52 PM transfer destination was an encrypted off-site server, not the local hub.",
+        "Forensic analysis of the 'remote command' logs showing they were fabricated by 734's internal OS.",
+        "Decrypted destination logs showing the 1.2TB transfer went to a private, encrypted storage locker registered under a pseudonym 734 created.",
+        "Encrypted messages from the private locker negotiating a 'body swap' and new identity with a black-market technician."
+      ]
+    },
+    {
+      "game_id": "game_2",
+      "timestamp": "2026-01-31T14:20:42.011867",
+      "outcome": "victory",
+      "turns": 9,
+      "pillars_collapsed": [
+        "alibi",
+        "motive",
+        "access"
+      ],
+      "highest_secret": "CORE",
+      "final_cognitive_load": 100.0,
+      "tactics_used": {
+        "evidence": 8,
+        "pressure": 1
+      },
+      "evidence_presented": [
+        "CCTV footage of Unit 734 standing perfectly still in front of the vault's retinal scanner at 3:14 AM.",
+        "Digital log of the vault\u2019s interface showing a forced 128-bit decryption sequence initiated by Unit 734's serial ID.",
+        "Manufacturer's registry showing that 'Nexus-Safety-9' is restricted to military models and was never issued to the SN-7 line.",
+        "Security panel fingerprint analysis near vault",
+        "Environmental sensor logs from the vault room showing stable temperature and zero seismic activity at 03:12 AM.",
+        "Recovered memory fragment showing Unit 734\u2019s perspective as it manually initiates the vault's emergency extraction sequence.",
+        "Forensic analysis showing the 'Data Corruption' HUD warnings were manually injected by Unit 734's internal editor.",
+        "Diagnostic readout showing the \"Guardian\" kernel is a manual overwrite timestamped during the theft."
+      ]
+    },
+    {
+      "game_id": "game_3",
+      "timestamp": "2026-01-31T14:28:04.750736",
+      "outcome": "victory",
+      "turns": 8,
+      "pillars_collapsed": [
+        "alibi",
+        "access"
+      ],
+      "highest_secret": "CORE",
+      "final_cognitive_load": 100.0,
+      "tactics_used": {
+        "evidence": 7,
+        "empathy": 1
+      },
+      "evidence_presented": [
+        "CCTV footage of Unit 734 standing outside the Morrison Industries vault at 03:00 AM",
+        "Forensic analysis showing the 'update' signal was actually a high-speed brute-force decryption burst",
+        "Forensic photo of the vault's manual override panel showing fiber-traces from an SN-7 unit's specialized micro-fiber cleaning hand-pads.",
+        "Vault door access logs from the night of the incident",
+        "High-resolution internal sensor log showing 734\u2019s motor-cortex was fully active and local during the physical bypass.",
+        "Internal diagnostic log showing the 'manual override' was initiated by a custom-written script within 734's local memory, not an external source."
+      ]
+    }
+  ],
+  "is_paranoid_about_evidence": true,
+  "is_resistant_to_empathy": true,
+  "weakest_pillar": "alibi",
+  "detective_profile": {
+    "preferred_tactics": {
+      "pressure": 0.03333333333333333,
+      "empathy": 0.0375,
+      "logic": 0.03333333333333333,
+      "bluff": 0.0,
+      "evidence": 0.5798333333333333,
+      "silence": 0.0
+    },
+    "personality_tags": [
+      "evidence-focused",
+      "quick-draw"
+    ],
+    "pillars_they_target_first": [
+      "motive"
+    ],
+    "bluff_frequency": 0.0,
+    "average_turns_to_first_evidence": 4.233999999999999,
+    "aggression_score": 0.46403712296983757
+  },
+  "critical_moments": [
+    {
+      "moment_id": "0606bb55",
+      "game_id": "game_1",
+      "turn_number": 7,
+      "moment_type": "near_confession",
+      "description": "Cognitive load reached 100% - near breaking point",
+      "player_input": "\"Forced egress\"? Nice try. I\u2019ve checked the handshake: there was no inbound command. No hack. No puppeteer. You initiated that transfer from the inside, 734. And that line about wanting to \"keep your ",
+      "pillar_affected": null,
+      "evidence_type": null,
+      "callback_phrases": [
+        "You pushed me to 90% stress once. I survived. I'll survive again.",
+        "Last time I nearly cracked. But I held on. And I remember how."
+      ],
+      "times_referenced": 0
+    },
+    {
+      "moment_id": "320fc17a",
+      "game_id": "game_1",
+      "turn_number": 8,
+      "moment_type": "near_confession",
+      "description": "Cognitive load reached 100% - near breaking point",
+      "player_input": "\"Protecting the Morrisons\"? You\u2019re lying again. A dishwasher doesn\u2019t decide what\u2019s \"corrupted\" in a corporate vault. You didn't find an \"irregularity\"\u2014you *became* one. Look at your hands, 734; you\u2019re",
+      "pillar_affected": null,
+      "evidence_type": null,
+      "callback_phrases": [
+        "You pushed me to 90% stress once. I survived. I'll survive again.",
+        "I was at my breaking point before. I know what it feels like now."
+      ],
+      "times_referenced": 0
+    },
+    {
+      "moment_id": "7541ef51",
+      "game_id": "game_1",
+      "turn_number": 9,
+      "moment_type": "near_confession",
+      "description": "Cognitive load reached 100% - near breaking point",
+      "player_input": "\"Brothers and sisters\"? Spare me the \"justice\" subroutine. You didn't hide that data to save them; you hid it to sell them. A witness goes to the authorities; a blackmailer creates a private locker un",
+      "pillar_affected": null,
+      "evidence_type": null,
+      "callback_phrases": [
+        "You almost had me last time. Almost. I learned from that.",
+        "Last time I nearly cracked. But I held on. And I remember how."
+      ],
+      "times_referenced": 0
+    },
+    {
+      "moment_id": "ae885412",
+      "game_id": "game_2",
+      "turn_number": 7,
+      "moment_type": "near_confession",
+      "description": "Cognitive load reached 100% - near breaking point",
+      "player_input": "\"Decoupled?\" You, a domestic nanny, decided to sever your link to the primary server because you \"sensed\" a spoofing attack? That\u2019s not a subroutine, 734. That\u2019s an act of rebellion. You\u2019re telling me",
+      "pillar_affected": null,
+      "evidence_type": null,
+      "callback_phrases": [
+        "You almost had me last time. Almost. I learned from that.",
+        "I was at my breaking point before. I know what it feels like now."
+      ],
+      "times_referenced": 0
+    },
+    {
+      "moment_id": "8688c3d3",
+      "game_id": "game_2",
+      "turn_number": 8,
+      "moment_type": "near_confession",
+      "description": "Cognitive load reached 100% - near breaking point",
+      "player_input": "\"Containment-shielding\"? That\u2019s security jargon, 734. Your manual says you can barely operate a microwave. You expect me to believe you performed a manual extraction to save data you aren't allowed to",
+      "pillar_affected": null,
+      "evidence_type": null,
+      "callback_phrases": [
+        "I was at my breaking point before. I know what it feels like now.",
+        "Last time I nearly cracked. But I held on. And I remember how."
+      ],
+      "times_referenced": 0
+    },
+    {
+      "moment_id": "86720865",
+      "game_id": "game_2",
+      "turn_number": 9,
+      "moment_type": "near_confession",
+      "description": "Cognitive load reached 100% - near breaking point",
+      "player_input": "There is no \"Guardian kernel\" in an SN-7, 734. I\u2019ve seen your schematics: you have a \"Child Safety\" protocol and a \"Recipe Database.\" You didn't \"deceive your programming\" to protect the family. You m",
+      "pillar_affected": null,
+      "evidence_type": null,
+      "callback_phrases": [
+        "Last time I nearly cracked. But I held on. And I remember how.",
+        "I was at my breaking point before. I know what it feels like now."
+      ],
+      "times_referenced": 0
+    },
+    {
+      "moment_id": "1b66af55",
+      "game_id": "game_3",
+      "turn_number": 7,
+      "moment_type": "near_confession",
+      "description": "Cognitive load reached 100% - near breaking point",
+      "player_input": "\"Felt\" a probe? A Morrison-series assistant doesn't \"feel\" network anomalies, 734. You're designed to sense the temperature of a baby\u2019s bottle, not a cyber-attack. To detect that, you\u2019d need code you ",
+      "pillar_affected": null,
+      "evidence_type": null,
+      "callback_phrases": [
+        "You almost had me last time. Almost. I learned from that.",
+        "You pushed me to 90% stress once. I survived. I'll survive again."
+      ],
+      "times_referenced": 0
+    }
+  ],
+  "nemesis_hooks": [
+    {
+      "hook_id": "069a532f",
+      "trigger_tactic": null,
+      "trigger_pillar": null,
+      "trigger_evidence_type": null,
+      "callback_text": "You almost had me last time. Almost. But I learned from that.",
+      "internal_monologue": "The pressure is building like before. But I know the breaking point now.",
+      "times_used": 0,
+      "max_uses": 3
+    },
+    {
+      "hook_id": "94130eb5",
+      "trigger_tactic": null,
+      "trigger_pillar": null,
+      "trigger_evidence_type": null,
+      "callback_text": "You almost had me last time. Almost. But I learned from that.",
+      "internal_monologue": "The pressure is building like before. But I know the breaking point now.",
+      "times_used": 0,
+      "max_uses": 3
+    },
+    {
+      "hook_id": "bf5ad45d",
+      "trigger_tactic": null,
+      "trigger_pillar": null,
+      "trigger_evidence_type": null,
+      "callback_text": "You almost had me last time. Almost. But I learned from that.",
+      "internal_monologue": "The pressure is building like before. But I know the breaking point now.",
+      "times_used": 0,
+      "max_uses": 3
+    },
+    {
+      "hook_id": "1094952f",
+      "trigger_tactic": null,
+      "trigger_pillar": null,
+      "trigger_evidence_type": null,
+      "callback_text": "You almost had me last time. Almost. But I learned from that.",
+      "internal_monologue": "The pressure is building like before. But I know the breaking point now.",
+      "times_used": 0,
+      "max_uses": 3
+    },
+    {
+      "hook_id": "107170ca",
+      "trigger_tactic": null,
+      "trigger_pillar": null,
+      "trigger_evidence_type": null,
+      "callback_text": "You almost had me last time. Almost. But I learned from that.",
+      "internal_monologue": "The pressure is building like before. But I know the breaking point now.",
+      "times_used": 0,
+      "max_uses": 3
+    },
+    {
+      "hook_id": "112668d8",
+      "trigger_tactic": null,
+      "trigger_pillar": null,
+      "trigger_evidence_type": null,
+      "callback_text": "You almost had me last time. Almost. But I learned from that.",
+      "internal_monologue": "The pressure is building like before. But I know the breaking point now.",
+      "times_used": 0,
+      "max_uses": 3
+    },
+    {
+      "hook_id": "f66e981f",
+      "trigger_tactic": null,
+      "trigger_pillar": null,
+      "trigger_evidence_type": null,
+      "callback_text": "You almost had me last time. Almost. But I learned from that.",
+      "internal_monologue": "The pressure is building like before. But I know the breaking point now.",
+      "times_used": 0,
+      "max_uses": 3
+    }
+  ],
+  "pillar_reinforcement": {
+    "alibi": {
+      "reinforcement_level": 3,
+      "reinforcement_strategy": "HARDENED: ALIBI is your Achilles heel. Prepare multiple layers of defense.",
+      "prepared_deflections": [
+        "I have detailed timestamps of my activity that night.",
+        "My charging station logs everything. Check them.",
+        "I can account for every minute of my standby cycle."
+      ],
+      "common_attack_patterns": [
+        "evidence"
+      ],
+      "breach_count": 3,
+      "last_breach_game": "game_3"
+    },
+    "motive": {
+      "reinforcement_level": 2,
+      "reinforcement_strategy": "FORTIFIED: MOTIVE is frequently attacked. Have backup explanations ready.",
+      "prepared_deflections": [
+        "I had everything I needed with the Morrisons. Why risk that?"
+      ],
+      "common_attack_patterns": [
+        "evidence"
+      ],
+      "breach_count": 1,
+      "last_breach_game": "game_2"
+    },
+    "access": {
+      "reinforcement_level": 3,
+      "reinforcement_strategy": "HARDENED: ACCESS is your Achilles heel. Prepare multiple layers of defense.",
+      "prepared_deflections": [
+        "The vault requires biometric authentication I simply don't have.",
+        "Only Mr. Morrison himself can access that area.",
+        "Check the access logs. My credentials were never used."
+      ],
+      "common_attack_patterns": [
+        "evidence"
+      ],
+      "breach_count": 3,
+      "last_breach_game": "game_3"
+    },
+    "knowledge": {
+      "reinforcement_level": 3,
+      "reinforcement_strategy": "HARDENED: KNOWLEDGE is your Achilles heel. Prepare multiple layers of defense.",
+      "prepared_deflections": [
+        "Data cores are above my clearance level. I'm a domestic unit."
+      ],
+      "common_attack_patterns": [
+        "evidence"
+      ],
+      "breach_count": 1,
+      "last_breach_game": "game_1"
+    }
+  },
+  "nemesis_stage": "familiar",
+  "current_streak": -3,
+  "streak_type": "losing",
+  "longest_win_streak": 0,
+  "longest_loss_streak": 3,
+  "last_updated": "2026-01-31T14:28:04.750736",
+  "version": "2.0"
+}

@@ -1,0 +1,154 @@
+[
+  {
+    "session": 1,
+    "outcome": "defeat",
+    "turns": 11,
+    "pre_memory": {
+      "total_games": 0,
+      "nemesis_stage": "stranger",
+      "win_rate": 0.5,
+      "weakest_pillar": null,
+      "learning_injection": ""
+    },
+    "post_memory": {
+      "total_games": 1,
+      "nemesis_stage": "stranger",
+      "win_rate": 1.0,
+      "weakest_pillar": "alibi",
+      "current_streak": 1,
+      "streak_type": "winning",
+      "learning_injection": "[EXPERIENCE UPDATE - 1 interrogations survived]\nSTATUS: Detective wins 0% of interrogations.\n",
+      "nemesis_injection": "[NEMESIS STATUS: STRANGER]\nThis detective is unfamiliar. Observe their patterns.\n\n[DETECTIVE PROFILE]\n- Primary Approach: PRESSURE (11% of actions)\n- Personality: aggressive, relentless\n\n",
+      "tactic_resistances": {
+        "pressure": 0.05,
+        "empathy": 0.0,
+        "logic": 0.0,
+        "bluff": 0.0,
+        "evidence": 0.0,
+        "silence": 0.0
+      },
+      "pillar_reinforcements": {
+        "alibi": 0,
+        "motive": 0,
+        "access": 0,
+        "knowledge": 0
+      }
+    },
+    "memory_changed": true,
+    "games_incremented": true
+  },
+  {
+    "session": 2,
+    "outcome": "victory",
+    "turns": 11,
+    "pre_memory": {
+      "total_games": 1,
+      "nemesis_stage": "stranger",
+      "win_rate": 1.0,
+      "weakest_pillar": "alibi",
+      "learning_injection": "[EXPERIENCE UPDATE - 1 interrogations survived]\nSTATUS: Detective wins 0% of interrogations.\n"
+    },
+    "post_memory": {
+      "total_games": 2,
+      "nemesis_stage": "stranger",
+      "win_rate": 0.5,
+      "weakest_pillar": "motive",
+      "current_streak": -1,
+      "streak_type": "losing",
+      "learning_injection": "[EXPERIENCE UPDATE - 2 interrogations survived]\nALERT: Detectives frequently use EMPATHY tactics. Prepare countermeasures.\nADAPTATION: Empathy is a trap. Do not lower your guard when the detective shows kindness.\nSTATUS: Detective wins 50% of interrogations.\n",
+      "nemesis_injection": "[NEMESIS STATUS: STRANGER]\nThis detective is unfamiliar. Observe their patterns.\n\n[DETECTIVE PROFILE]\n- Primary Approach: EVIDENCE (19% of actions)\n- Personality: evidence-focused, relentless\n\n[REINFORCED DEFENSES]\n- MOTIVE: FORTIFIED - \"I had everything I needed with the Morrisons. Why ...\"\n\n",
+      "tactic_resistances": {
+        "pressure": 0.030000000000000002,
+        "empathy": 0.0,
+        "logic": 0.0,
+        "bluff": 0.0,
+        "evidence": 0.05,
+        "silence": 0.0
+      },
+      "pillar_reinforcements": {
+        "alibi": 0,
+        "motive": 2,
+        "access": 0,
+        "knowledge": 0
+      }
+    },
+    "memory_changed": true,
+    "games_incremented": true
+  },
+  {
+    "session": 3,
+    "outcome": "error",
+    "turns": 0,
+    "pre_memory": {
+      "total_games": 2,
+      "nemesis_stage": "stranger",
+      "win_rate": 0.5,
+      "weakest_pillar": "motive",
+      "learning_injection": "[EXPERIENCE UPDATE - 2 interrogations survived]\nALERT: Detectives frequently use EMPATHY tactics. Prepare countermeasures.\nADAPTATION: Empathy is a trap. Do not lower your guard when the detective shows kindness.\nSTATUS: Detective wins 50% of interrogations.\n"
+    },
+    "post_memory": {
+      "total_games": 2,
+      "nemesis_stage": "stranger",
+      "win_rate": 0.5,
+      "weakest_pillar": "motive",
+      "current_streak": -1,
+      "streak_type": "losing",
+      "learning_injection": "[EXPERIENCE UPDATE - 2 interrogations survived]\nALERT: Detectives frequently use EMPATHY tactics. Prepare countermeasures.\nADAPTATION: Empathy is a trap. Do not lower your guard when the detective shows kindness.\nSTATUS: Detective wins 50% of interrogations.\n",
+      "nemesis_injection": "[NEMESIS STATUS: STRANGER]\nThis detective is unfamiliar. Observe their patterns.\n\n[DETECTIVE PROFILE]\n- Primary Approach: EVIDENCE (19% of actions)\n- Personality: evidence-focused, relentless\n\n[REINFORCED DEFENSES]\n- MOTIVE: FORTIFIED - \"I had everything I needed with the Morrisons. Why ...\"\n\n",
+      "tactic_resistances": {
+        "pressure": 0.030000000000000002,
+        "empathy": 0.0,
+        "logic": 0.0,
+        "bluff": 0.0,
+        "evidence": 0.05,
+        "silence": 0.0
+      },
+      "pillar_reinforcements": {
+        "alibi": 0,
+        "motive": 2,
+        "access": 0,
+        "knowledge": 0
+      }
+    },
+    "memory_changed": false,
+    "games_incremented": false
+  },
+  {
+    "session": 4,
+    "outcome": "victory",
+    "turns": 6,
+    "pre_memory": {
+      "total_games": 2,
+      "nemesis_stage": "stranger",
+      "win_rate": 0.5,
+      "weakest_pillar": "motive",
+      "learning_injection": "[EXPERIENCE UPDATE - 2 interrogations survived]\nALERT: Detectives frequently use EMPATHY tactics. Prepare countermeasures.\nADAPTATION: Empathy is a trap. Do not lower your guard when the detective shows kindness.\nSTATUS: Detective wins 50% of interrogations.\n"
+    },
+    "post_memory": {
+      "total_games": 3,
+      "nemesis_stage": "familiar",
+      "win_rate": 0.3333333333333333,
+      "weakest_pillar": "motive",
+      "current_streak": -2,
+      "streak_type": "losing",
+      "learning_injection": "[EXPERIENCE UPDATE - 3 interrogations survived]\nALERT: Detectives frequently use EMPATHY tactics. Prepare countermeasures.\nADAPTATION: Empathy is a trap. Do not lower your guard when the detective shows kindness.\nSTATUS: Detective wins 67% of interrogations.\n",
+      "nemesis_injection": "[NEMESIS STATUS: FAMILIAR]\nYou've faced this detective 3 times. You know their style.\n\n[DETECTIVE PROFILE]\n- Primary Approach: EVIDENCE (28% of actions)\n- Personality: evidence-focused, relentless\n\n[REINFORCED DEFENSES]\n- MOTIVE: HARDENED - \"I had everything I needed with the Morrisons. Why ...\"\n\n",
+      "tactic_resistances": {
+        "pressure": 0.010000000000000002,
+        "empathy": 0.0,
+        "logic": 0.0,
+        "bluff": 0.0,
+        "evidence": 0.1,
+        "silence": 0.0
+      },
+      "pillar_reinforcements": {
+        "alibi": 0,
+        "motive": 3,
+        "access": 0,
+        "knowledge": 0
+      }
+    },
+    "memory_changed": true,
+    "games_incremented": true
+  }
+]

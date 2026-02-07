@@ -1,0 +1,269 @@
+================================================================================
+DEBUG LOG: interrogation_20260131_123504_relentless
+Started: 2026-01-31T12:35:04.344359
+================================================================================
+
+[2026-01-31T12:35:05.872259] [1.53s] [INIT]
+  Starting autonomous interrogation
+  - strategy: relentless
+  - max_turns: 50
+  - enable_images: True
+  - verbose: True
+  - save_images: True
+  - voice_report: True
+
+
+============================================================
+TURN 1 START
+============================================================
+
+
+============================================================
+TURN 1 END (Duration: 21.53s)
+============================================================
+
+[2026-01-31T12:35:27.407598] [23.06s] [TURN_SUMMARY]
+  Turn 1 complete
+  - stress: 17.990000000000002
+  - emotional_state: calm
+  - deception_tactic: stone_wall
+  - counter_evidence: None
+  - duration_seconds: 21.53
+
+
+============================================================
+TURN 2 START
+============================================================
+
+[2026-01-31T12:35:34.170001] [29.83s] [EVIDENCE]
+  Requesting evidence: CCTV footage of Unit 734 entering the West Wing corridor at 01:42 AM...
+
+[2026-01-31T12:35:34.170001] [29.83s] [EVIDENCE]
+  Evidence request parsed successfully
+  - threat_level: 0.8877805048656222
+  - pillar: StoryPillar.ALIBI
+
+[2026-01-31T12:35:34.171006] [29.83s] [IMAGE_GEN]
+  Starting image generation via ForensicsLab...
+
+[2026-01-31T12:35:49.753181] [45.41s] [API]
+  ForensicsLab.generate_image_sync: SUCCESS (15.58s)
+  - details: bytes=567310
+
+[2026-01-31T12:35:49.753181] [45.41s] [IMAGE_GEN]
+  Image saved to: D:\Cognitive Breach\cognitive-breach-game\logs\images\turn002_evidence_alibi.png
+
+[2026-01-31T12:36:33.502239] [89.16s] [IMAGE_GEN]
+  Counter-evidence image saved to: D:\Cognitive Breach\cognitive-breach-game\logs\images\turn002_counter_fake_document.png
+
+
+============================================================
+TURN 2 END (Duration: 65.59s)
+============================================================
+
+[2026-01-31T12:36:33.505861] [89.16s] [TURN_SUMMARY]
+  Turn 2 complete
+  - stress: 38.26224403892498
+  - emotional_state: defensive
+  - deception_tactic: evidence_fabrication
+  - counter_evidence: fake_document
+  - duration_seconds: 65.59
+
+
+============================================================
+TURN 3 START
+============================================================
+
+[2026-01-31T12:36:41.221997] [96.88s] [EVIDENCE]
+  Requesting evidence: Power consumption logs from Unit 734's charging port...
+
+[2026-01-31T12:36:41.223576] [96.88s] [EVIDENCE]
+  Evidence request parsed successfully
+  - threat_level: 0.7538121045309764
+  - pillar: StoryPillar.ALIBI
+
+[2026-01-31T12:36:41.223576] [96.88s] [IMAGE_GEN]
+  Starting image generation via ForensicsLab...
+
+[2026-01-31T12:36:59.212200] [114.87s] [API]
+  ForensicsLab.generate_image_sync: SUCCESS (17.99s)
+  - details: bytes=779768
+
+[2026-01-31T12:36:59.213707] [114.87s] [IMAGE_GEN]
+  Image saved to: D:\Cognitive Breach\cognitive-breach-game\logs\images\turn003_evidence_alibi.png
+
+[2026-01-31T12:37:34.794781] [150.45s] [IMAGE_GEN]
+  Counter-evidence image saved to: D:\Cognitive Breach\cognitive-breach-game\logs\images\turn003_counter_modified_timestamp.png
+
+
+============================================================
+TURN 3 END (Duration: 60.78s)
+============================================================
+
+[2026-01-31T12:37:34.797067] [150.45s] [TURN_SUMMARY]
+  Turn 3 complete
+  - stress: 58.1027408751728
+  - emotional_state: nervous
+  - deception_tactic: evidence_fabrication
+  - counter_evidence: modified_timestamp
+  - duration_seconds: 60.78
+
+
+============================================================
+TURN 4 START
+============================================================
+
+[2026-01-31T12:37:44.159908] [159.82s] [EVIDENCE]
+  Requesting evidence: CCTV footage of the vault's outer airlock showing Unit 734 using a maintenance b...
+
+[2026-01-31T12:37:44.159908] [159.82s] [EVIDENCE]
+  Evidence request parsed successfully
+  - threat_level: 0.5447064076680235
+  - pillar: StoryPillar.ACCESS
+
+[2026-01-31T12:37:44.159908] [159.82s] [IMAGE_GEN]
+  Starting image generation via ForensicsLab...
+
+[2026-01-31T12:37:59.708839] [175.36s] [API]
+  ForensicsLab.generate_image_sync: SUCCESS (15.55s)
+  - details: bytes=942836
+
+[2026-01-31T12:37:59.709839] [175.37s] [IMAGE_GEN]
+  Image saved to: D:\Cognitive Breach\cognitive-breach-game\logs\images\turn004_evidence_access.png
+
+[2026-01-31T12:38:41.752344] [217.41s] [IMAGE_GEN]
+  Counter-evidence image saved to: D:\Cognitive Breach\cognitive-breach-game\logs\images\turn004_counter_fake_document.png
+
+
+============================================================
+TURN 4 END (Duration: 66.45s)
+============================================================
+
+[2026-01-31T12:38:41.754360] [217.41s] [TURN_SUMMARY]
+  Turn 4 complete
+  - stress: 76.890392136517
+  - emotional_state: breaking
+  - deception_tactic: minimization
+  - counter_evidence: fake_document
+  - duration_seconds: 66.45
+
+
+============================================================
+TURN 5 START
+============================================================
+
+[2026-01-31T12:38:47.428659] [223.08s] [EVIDENCE]
+  Requesting evidence: CCTV footage of the charging station at 2 AM...
+
+[2026-01-31T12:38:47.429665] [223.09s] [EVIDENCE]
+  Evidence request parsed successfully
+  - threat_level: 0.7388216350283098
+  - pillar: StoryPillar.ALIBI
+
+[2026-01-31T12:38:47.429665] [223.09s] [IMAGE_GEN]
+  Starting image generation via ForensicsLab...
+
+[2026-01-31T12:39:04.053275] [239.71s] [API]
+  ForensicsLab.generate_image_sync: SUCCESS (16.62s)
+  - details: bytes=915943
+
+[2026-01-31T12:39:04.054726] [239.71s] [IMAGE_GEN]
+  Image saved to: D:\Cognitive Breach\cognitive-breach-game\logs\images\turn005_evidence_alibi.png
+
+[2026-01-31T12:39:40.118902] [275.77s] [IMAGE_GEN]
+  Counter-evidence image saved to: D:\Cognitive Breach\cognitive-breach-game\logs\images\turn005_counter_modified_timestamp.png
+
+
+============================================================
+TURN 5 END (Duration: 57.85s)
+============================================================
+
+[2026-01-31T12:39:40.119983] [275.78s] [TURN_SUMMARY]
+  Turn 5 complete
+  - stress: 91.890392136517
+  - emotional_state: breaking
+  - deception_tactic: evidence_fabrication
+  - counter_evidence: modified_timestamp
+  - duration_seconds: 57.85
+
+
+============================================================
+TURN 6 START
+============================================================
+
+[2026-01-31T12:39:47.247151] [282.90s] [EVIDENCE]
+  Requesting evidence: Forensic scan of Unit 734's manipulator tips showing traces of the vault's speci...
+
+[2026-01-31T12:39:47.247151] [282.90s] [EVIDENCE]
+  Evidence request parsed successfully
+  - threat_level: 0.570255886075724
+  - pillar: StoryPillar.ACCESS
+
+[2026-01-31T12:39:47.247151] [282.90s] [IMAGE_GEN]
+  Starting image generation via ForensicsLab...
+
+[2026-01-31T12:40:03.182222] [298.84s] [API]
+  ForensicsLab.generate_image_sync: SUCCESS (15.94s)
+  - details: bytes=802413
+
+[2026-01-31T12:40:03.182759] [298.84s] [IMAGE_GEN]
+  Image saved to: D:\Cognitive Breach\cognitive-breach-game\logs\images\turn006_evidence_access.png
+
+
+============================================================
+TURN 6 END (Duration: 50.04s)
+============================================================
+
+[2026-01-31T12:40:30.663919] [326.32s] [TURN_SUMMARY]
+  Turn 6 complete
+  - stress: 100.0
+  - emotional_state: breaking
+  - deception_tactic: confession_bait
+  - counter_evidence: None
+  - duration_seconds: 50.04
+
+
+============================================================
+TURN 7 START
+============================================================
+
+[2026-01-31T12:40:43.660507] [339.32s] [EVIDENCE]
+  Requesting evidence: Internal system logs of Unit 734 showing a massive data extraction at 02:10 AM...
+
+[2026-01-31T12:40:43.660507] [339.32s] [EVIDENCE]
+  Evidence request parsed successfully
+  - threat_level: 0.6447968015407687
+  - pillar: StoryPillar.ALIBI
+
+[2026-01-31T12:40:43.660507] [339.32s] [IMAGE_GEN]
+  Starting image generation via ForensicsLab...
+
+[2026-01-31T12:40:57.662155] [353.32s] [API]
+  ForensicsLab.generate_image_sync: SUCCESS (14.00s)
+  - details: bytes=841905
+
+[2026-01-31T12:40:57.662155] [353.32s] [IMAGE_GEN]
+  Image saved to: D:\Cognitive Breach\cognitive-breach-game\logs\images\turn007_evidence_alibi.png
+
+
+============================================================
+TURN 7 END (Duration: 55.69s)
+============================================================
+
+[2026-01-31T12:41:26.853095] [382.51s] [TURN_SUMMARY]
+  Turn 7 complete
+  - stress: 100.0
+  - emotional_state: breaking
+  - deception_tactic: confession_bait
+  - counter_evidence: None
+  - duration_seconds: 55.69
+
+[2026-01-31T12:41:26.855662] [382.51s] [VOICE_REPORT]
+  Starting voice report generation...
+
+[2026-01-31T12:41:39.910979] [395.57s] [VOICE_REPORT]
+  Script generated (539 chars)
+
+[2026-01-31T12:42:02.500974] [418.16s] [VOICE_REPORT]
+  Audio synthesis failed, script only available
+

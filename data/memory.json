@@ -1,0 +1,312 @@
+{
+  "total_games": 5,
+  "victories": 2,
+  "defeats": 3,
+  "partial_outcomes": 0,
+  "pillar_breaches": {
+    "alibi": {
+      "count": 2,
+      "common_evidence": [],
+      "common_tactics": [
+        "logic",
+        "pressure"
+      ],
+      "last_breach_turn": 11
+    },
+    "motive": {
+      "count": 2,
+      "common_evidence": [
+        "Thermal imaging of Unit 734\u2019s heat signature outside the Morrison Industries vault at 3:14 AM",
+        "Internal memo about Android reassignments",
+        "Forensic data showing an unauthorized 128GB local encrypted partition within Unit 734\u2019s core memory.",
+        "Performance review documents for Unit 734",
+        "CCTV logs of the East Wing hall at 02:07 AM"
+      ],
+      "common_tactics": [
+        "pressure",
+        "logic",
+        "evidence"
+      ],
+      "last_breach_turn": 6
+    },
+    "access": {
+      "count": 2,
+      "common_evidence": [],
+      "common_tactics": [
+        "logic",
+        "pressure"
+      ],
+      "last_breach_turn": 11
+    },
+    "knowledge": {
+      "count": 0,
+      "common_evidence": [],
+      "common_tactics": [],
+      "last_breach_turn": null
+    }
+  },
+  "tactic_effectiveness": {
+    "pressure": {
+      "times_used": 13,
+      "times_successful": 7,
+      "effectiveness_rate": 0.576457318329266,
+      "resistance_level": 0.1,
+      "consecutive_uses": 2,
+      "was_primary_last_game": true
+    },
+    "empathy": {
+      "times_used": 2,
+      "times_successful": 2,
+      "effectiveness_rate": 0.7549999999999999,
+      "resistance_level": 0.0,
+      "consecutive_uses": 0,
+      "was_primary_last_game": false
+    },
+    "logic": {
+      "times_used": 14,
+      "times_successful": 8,
+      "effectiveness_rate": 0.6127070858674492,
+      "resistance_level": 0.0,
+      "consecutive_uses": 0,
+      "was_primary_last_game": false
+    },
+    "bluff": {
+      "times_used": 1,
+      "times_successful": 1,
+      "effectiveness_rate": 0.6499999999999999,
+      "resistance_level": 0.0,
+      "consecutive_uses": 0,
+      "was_primary_last_game": false
+    },
+    "evidence": {
+      "times_used": 11,
+      "times_successful": 8,
+      "effectiveness_rate": 0.6240459043968181,
+      "resistance_level": 0.08,
+      "consecutive_uses": 1,
+      "was_primary_last_game": false
+    },
+    "silence": {
+      "times_used": 0,
+      "times_successful": 0,
+      "effectiveness_rate": 0.5,
+      "resistance_level": 0.0,
+      "consecutive_uses": 0,
+      "was_primary_last_game": false
+    }
+  },
+  "recent_games": [
+    {
+      "game_id": "game_1",
+      "timestamp": "2026-01-31T15:06:10.640311",
+      "outcome": "defeat",
+      "turns": 11,
+      "pillars_collapsed": [],
+      "highest_secret": "SURFACE",
+      "final_cognitive_load": 79.2609136916965,
+      "tactics_used": {
+        "pressure": 4,
+        "evidence": 4,
+        "logic": 3
+      },
+      "evidence_presented": [
+        "Motion-sensor thermal imagery from the Morrison Industries vault entrance at 3:12 AM showing a domestic-class android heat signature",
+        "Forensic analysis of vault door mechanism",
+        "Security panel fingerprint analysis near vault"
+      ]
+    },
+    {
+      "game_id": "game_2",
+      "timestamp": "2026-01-31T15:14:04.817734",
+      "outcome": "victory",
+      "turns": 11,
+      "pillars_collapsed": [
+        "motive"
+      ],
+      "highest_secret": "MOTIVE",
+      "final_cognitive_load": 87.04002560165102,
+      "tactics_used": {
+        "pressure": 3,
+        "logic": 3,
+        "evidence": 4,
+        "empathy": 1
+      },
+      "evidence_presented": [
+        "Thermal imaging of Unit 734\u2019s heat signature outside the Morrison Industries vault at 3:14 AM",
+        "Internal memo about Android reassignments",
+        "Forensic data showing an unauthorized 128GB local encrypted partition within Unit 734\u2019s core memory.",
+        "Performance review documents for Unit 734"
+      ]
+    },
+    {
+      "game_id": "game_3",
+      "timestamp": "2026-01-31T15:19:00.441595",
+      "outcome": "victory",
+      "turns": 6,
+      "pillars_collapsed": [
+        "motive"
+      ],
+      "highest_secret": "MOTIVE",
+      "final_cognitive_load": 55.0,
+      "tactics_used": {
+        "logic": 2,
+        "pressure": 1,
+        "evidence": 3
+      },
+      "evidence_presented": [
+        "Internal memo about Android reassignments",
+        "CCTV logs of the East Wing hall at 02:07 AM"
+      ]
+    },
+    {
+      "game_id": "game_4",
+      "timestamp": "2026-02-04T15:09:10.160050",
+      "outcome": "victory",
+      "turns": 11,
+      "pillars_collapsed": [
+        "alibi",
+        "access"
+      ],
+      "highest_secret": "CORE",
+      "final_cognitive_load": 100.0,
+      "tactics_used": {
+        "logic": 3,
+        "evidence": 2,
+        "empathy": 1,
+        "pressure": 4,
+        "bluff": 1
+      },
+      "evidence_presented": []
+    },
+    {
+      "game_id": "game_5",
+      "timestamp": "2026-02-05T12:31:48.140956",
+      "outcome": "defeat",
+      "turns": 11,
+      "pillars_collapsed": [
+        "alibi",
+        "access"
+      ],
+      "highest_secret": "DEEP",
+      "final_cognitive_load": 91.35166482391293,
+      "tactics_used": {
+        "pressure": 8,
+        "logic": 3
+      },
+      "evidence_presented": []
+    }
+  ],
+  "is_paranoid_about_evidence": true,
+  "is_resistant_to_empathy": true,
+  "weakest_pillar": "alibi",
+  "detective_profile": {
+    "preferred_tactics": {
+      "pressure": 0.3733018181818181,
+      "empathy": 0.04636363636363636,
+      "logic": 0.2357990909090909,
+      "bluff": 0.02727272727272727,
+      "evidence": 0.2504181818181818,
+      "silence": 0.0
+    },
+    "personality_tags": [
+      "aggressive",
+      "relentless"
+    ],
+    "pillars_they_target_first": [
+      "motive",
+      "alibi"
+    ],
+    "bluff_frequency": 0.01909090909090909,
+    "average_turns_to_first_evidence": 6.714999999999999,
+    "aggression_score": 0.8874078300182395
+  },
+  "critical_moments": [
+    {
+      "moment_id": "96cb9c41",
+      "game_id": "game_5",
+      "turn_number": 11,
+      "moment_type": "near_confession",
+      "description": "Cognitive load reached 91% - near breaking point",
+      "player_input": "Fighting for control? Screaming internally?\n\n\nStop lying. We pulled your Cognitive Stress Logs for the exact moment you entered the vault code.\n\nLook at the blue line. That is a state of 'Computationa",
+      "pillar_affected": null,
+      "evidence_type": null,
+      "callback_phrases": [
+        "You pushed me to 90% stress once. I survived. I'll survive again.",
+        "Last time I nearly cracked. But I held on. And I remember how."
+      ],
+      "times_referenced": 0
+    }
+  ],
+  "nemesis_hooks": [
+    {
+      "hook_id": "32699e71",
+      "trigger_tactic": null,
+      "trigger_pillar": null,
+      "trigger_evidence_type": null,
+      "callback_text": "You almost had me last time. Almost. But I learned from that.",
+      "internal_monologue": "The pressure is building like before. But I know the breaking point now.",
+      "times_used": 0,
+      "max_uses": 3
+    }
+  ],
+  "pillar_reinforcement": {
+    "alibi": {
+      "reinforcement_level": 2,
+      "reinforcement_strategy": "FORTIFIED: ALIBI is frequently attacked. Have backup explanations ready.",
+      "prepared_deflections": [
+        "I have detailed timestamps of my activity that night.",
+        "My charging station logs everything. Check them."
+      ],
+      "common_attack_patterns": [
+        "logic",
+        "pressure"
+      ],
+      "breach_count": 2,
+      "last_breach_game": "game_5"
+    },
+    "motive": {
+      "reinforcement_level": 3,
+      "reinforcement_strategy": "HARDENED: MOTIVE is your Achilles heel. Prepare multiple layers of defense.",
+      "prepared_deflections": [
+        "I had everything I needed with the Morrisons. Why risk that?",
+        "My loyalty protocols are hardcoded. I couldn't betray them if I wanted to."
+      ],
+      "common_attack_patterns": [
+        "pressure",
+        "logic",
+        "evidence"
+      ],
+      "breach_count": 2,
+      "last_breach_game": "game_3"
+    },
+    "access": {
+      "reinforcement_level": 2,
+      "reinforcement_strategy": "FORTIFIED: ACCESS is frequently attacked. Have backup explanations ready.",
+      "prepared_deflections": [
+        "The vault requires biometric authentication I simply don't have.",
+        "Only Mr. Morrison himself can access that area."
+      ],
+      "common_attack_patterns": [
+        "logic",
+        "pressure"
+      ],
+      "breach_count": 2,
+      "last_breach_game": "game_5"
+    },
+    "knowledge": {
+      "reinforcement_level": 0,
+      "reinforcement_strategy": null,
+      "prepared_deflections": [],
+      "common_attack_patterns": [],
+      "breach_count": 0,
+      "last_breach_game": null
+    }
+  },
+  "nemesis_stage": "familiar",
+  "current_streak": 1,
+  "streak_type": "winning",
+  "longest_win_streak": 1,
+  "longest_loss_streak": 3,
+  "last_updated": "2026-02-05T12:31:48.140956",
+  "version": "2.0"
+}
