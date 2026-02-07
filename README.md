@@ -24,7 +24,12 @@ Your goal is to collapse these pillars through questioning and evidence. As pres
 
 ## Evidence System
 
-The game ships with preloaded evidence and supports player uploads.
+The game ships with preloaded evidence and supports player uploads. It also includes a **Forensics Lab** where you can request **new evidence on demand** during an interrogation.
+
+- **Live forensic requests** generate fresh, case-specific images in real time (logs, documents, surveillance stills) based on the current context.
+- **Preloaded evidence** exists for quick play or demos.
+
+Details:
 - Image evidence: stored in `data/evidence_*.png`
 - Audio evidence: stored in `data/*.mp3`
 - Evidence metadata: `data/evidence_manifest.json`
