@@ -356,28 +356,40 @@ class GeminiClient:
         else:
             timeout = 45  # Text-only timeout
 
+        # Build generation config with broad compatibility across google-generativeai versions.
+        # Some versions don't support `response_mime_type` or `request_options`.
+        try:
+            gen_config = genai.GenerationConfig(
+                response_mime_type="application/json",
+                temperature=0.85,
+                max_output_tokens=4096,
+            )
+        except TypeError:
+            gen_config = genai.GenerationConfig(
+                temperature=0.85,
+                max_output_tokens=4096,
+            )
+
+        def _generate(content):
+            try:
+                return self.model.generate_content(
+                    content,
+                    generation_config=gen_config,
+                    request_options={"timeout": timeout},
+                )
+            except TypeError:
+                # Older SDKs don't accept request_options; fall back to default timeout.
+                return self.model.generate_content(
+                    content,
+                    generation_config=gen_config,
+                )
+
         if len(content_parts) > 1:
             # MULTIMODAL: Unit 734 can "see" and/or "hear" evidence
-            return self.model.generate_content(
-                content_parts,
-                generation_config=genai.GenerationConfig(
-                    response_mime_type="application/json",
-                    temperature=0.85,
-                    max_output_tokens=4096,  # Increased for complex responses
-                ),
-                request_options={"timeout": timeout}
-            )
-        else:
-            # Text-only mode (no evidence presented)
-            return self.model.generate_content(
-                prompt,
-                generation_config=genai.GenerationConfig(
-                    response_mime_type="application/json",
-                    temperature=0.85,
-                    max_output_tokens=4096,  # Increased for complex responses
-                ),
-                request_options={"timeout": timeout}
-            )
+            return _generate(content_parts)
+
+        # Text-only mode (no evidence presented)
+        return _generate(prompt)
 
     def _get_fallback_response(
         self,
