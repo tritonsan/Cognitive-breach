@@ -26,13 +26,15 @@ def apply_glitch_effect(
     Returns:
         Tuple of (glitched_text, was_glitched)
     """
-    # No glitch below threshold
-    if cognitive_load < 50 and mask_divergence < 40:
+    # STRICT THRESHOLD: Only glitch when stress > 90% (near breaking)
+    # Unit 734 must remain perfectly articulate until extreme stress
+    if cognitive_load < 90:
         return text, False
 
     # Calculate glitch intensity (0.0 to 0.4)
-    load_factor = max(0, (cognitive_load - 50)) / 125  # 0-0.4
-    mask_factor = max(0, (mask_divergence - 40)) / 150  # 0-0.4
+    # Only triggers at 90%+, scales from there
+    load_factor = max(0, (cognitive_load - 90)) / 25  # 0-0.4 (90% to 100%)
+    mask_factor = max(0, (mask_divergence - 80)) / 50  # 0-0.4 (requires very high divergence)
     glitch_probability = min(load_factor + mask_factor, 0.4)
 
     if glitch_probability < 0.05:

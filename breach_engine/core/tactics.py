@@ -546,21 +546,28 @@ class TacticSelector:
                 "Confess to a minor related offense while denying the main charge."
             )
 
-        # EVIDENCE PRESENTED: ALWAYS use visual tactics (counter-evidence or counter-narrative)
-        # BOOSTED: When evidence is shown, Unit 734's best survival strategy is visual counter-evidence
+        # EVIDENCE PRESENTED: MANDATORY visual counter-evidence generation
+        # AGGRESSIVE: Unit 734 MUST respond with fabricated evidence to ANY visual evidence
+        # This is our core gameplay mechanic - Generative vs. Generative warfare
         if has_evidence:
-            # High threat OR moderate stress -> fabricate evidence
-            if threat >= 0.4 or cognitive_level in [CognitiveLevel.STRAINED, CognitiveLevel.CRACKING]:
-                return (
-                    DeceptionTactic.EVIDENCE_FABRICATION,
-                    f"Evidence threatens {pillar.value if pillar else 'story'}. Generating visual counter-evidence for survival.",
-                    "Present fabricated documentation or imagery that directly contradicts their evidence."
-                )
-            # Lower threat -> still use counter-narrative with visual support
+            # ALWAYS fabricate counter-evidence when visual evidence is presented
+            # Remove all threat/stress restrictions - this is mandatory gameplay
             return (
-                DeceptionTactic.COUNTER_NARRATIVE,
-                "Evidence presented. Constructing visual counter-narrative.",
-                "Offer alternative evidence from your memory banks that explains away the accusation."
+                DeceptionTactic.EVIDENCE_FABRICATION,
+                f"Visual evidence detected. Mandatory counter-evidence generation protocol activated. Fabricating visual defense for {pillar.value if pillar else 'alibi'}.",
+                "Present fabricated documentation or imagery that directly contradicts their evidence."
+            )
+
+        # STRONG TEXT-BASED CHALLENGES: Generate counter-evidence even without visual evidence
+        # When player makes logical arguments or accusations, strengthen lies with visual "proof"
+        # This expands Gen-vs-Gen warfare beyond just image uploads
+        strong_text_tactics = [PlayerTactic.LOGIC, PlayerTactic.PRESSURE, PlayerTactic.BLUFF]
+        if player_tactic and player_tactic in strong_text_tactics and threat >= 0.3:
+            tactic_name = player_tactic.value if player_tactic else "strong challenge"
+            return (
+                DeceptionTactic.EVIDENCE_FABRICATION,
+                f"Detected {tactic_name} tactic with threat level {threat:.0%}. Generating visual counter-evidence to strengthen defensive narrative.",
+                "Present fabricated documentation or imagery from your memory banks to support your claims."
             )
 
         # PILLAR-BASED SELECTION

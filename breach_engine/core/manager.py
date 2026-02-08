@@ -258,7 +258,9 @@ class CriticalMomentTracker:
             )
 
         # Check for EVIDENCE_BOMB (high threat evidence)
-        if turn.get("evidence_threat_level", 0) >= 0.7 and turn.get("evidence_presented"):
+        # BUG FIX: Handle None values for evidence_threat_level
+        threat_level = turn.get("evidence_threat_level") or 0
+        if threat_level >= 0.7 and turn.get("evidence_presented"):
             evidence_type = turn["evidence_presented"]
             # BUG FIX: Safe handling of pillar_damage that may be None or invalid
             pillar_damage = turn.get("pillar_damage")
@@ -277,7 +279,10 @@ class CriticalMomentTracker:
                 )
 
         # Check for NEAR_CONFESSION (survived high stress)
-        if turn.get("cognitive_load", 0) >= 90 and turn.get("cognitive_load_before", 0) < 90:
+        # BUG FIX: Handle None values for cognitive_load
+        cognitive_load = turn.get("cognitive_load") or 0
+        cognitive_load_before = turn.get("cognitive_load_before") or 0
+        if cognitive_load >= 90 and cognitive_load_before < 90:
             # Just crossed into dangerous territory
             templates = self.CALLBACK_TEMPLATES["near_confession"]
             callbacks = random.sample(templates, min(2, len(templates)))
@@ -310,7 +315,9 @@ class CriticalMomentTracker:
             max_dmg_tactical = max(pillar_damage_tactical.values())
         else:
             max_dmg_tactical = 0
-        if (turn.get("deception_confidence", 0) >= 0.8 and
+        # BUG FIX: Handle None values for deception_confidence
+        deception_confidence = turn.get("deception_confidence") or 0
+        if (deception_confidence >= 0.8 and
             turn.get("deception_tactic") and
             not turn.get("pillar_collapsed") and
             max_dmg_tactical < 10):
@@ -1909,7 +1916,7 @@ class BreachManager:
         context = create_fabrication_context(
             threatened_pillar=tactic_decision.trigger.pillar_threatened,
             cognitive_load=self.psychology.cognitive.load,
-            alibi_time="11 PM to 3:15 AM",  # Unit 734's claimed alibi
+            alibi_time="11 PM to 6 AM",  # Unit 734's claimed alibi
             current_deception_tactic=tactic_decision.selected_tactic.value,
         )
 

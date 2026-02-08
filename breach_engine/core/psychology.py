@@ -838,7 +838,7 @@ def create_unit_734_psychology() -> BreachPsychology:
         StoryPillar.ALIBI: LiePillar(
             id=StoryPillar.ALIBI,
             name="The Alibi",
-            core_claim="I was in standby mode from 11 PM to 6 AM",
+            core_claim="I was docked in standby/maintenance from 11 PM to 6 AM",
             health=100.0
         ),
         StoryPillar.MOTIVE: LiePillar(
@@ -866,7 +866,7 @@ def create_unit_734_psychology() -> BreachPsychology:
         # ALIBI pillar lies
         "alibi_standby": LieNode(
             id="alibi_standby",
-            content="I was in standby mode the entire night",
+            content="I was docked in standby mode the entire night",
             pillar=StoryPillar.ALIBI,
             importance=1.0,  # Core lie
             burns_if_evidence=["power_log", "movement_sensor"]
@@ -881,7 +881,7 @@ def create_unit_734_psychology() -> BreachPsychology:
         ),
         "alibi_time": LieNode(
             id="alibi_time",
-            content="I entered standby at exactly 11 PM",
+            content="I entered docked standby at exactly 11 PM",
             pillar=StoryPillar.ALIBI,
             importance=0.4,
             dependent_on=["alibi_standby"]

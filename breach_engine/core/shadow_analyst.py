@@ -440,9 +440,9 @@ IMPORTANT:
                     generation_config=genai.GenerationConfig(
                         response_mime_type="application/json",
                         temperature=0.3,  # Low temp for consistent analysis
-                        max_output_tokens=2048,  # Increased from 1024 to prevent truncation
+                        max_output_tokens=4096,  # Increased to 4096 to prevent truncation of large schema
                     ),
-                    request_options={"timeout": 25}  # Increased from 15s for reliable completion
+                    request_options={"timeout": 30}  # Increased timeout for larger output
                 )
             )
 

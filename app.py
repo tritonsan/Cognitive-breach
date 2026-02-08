@@ -19,6 +19,18 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 # Load environment variables
 load_dotenv()
 
+# Streamlit Cloud secrets fallback
+try:
+    if "GEMINI_API_KEY" in st.secrets:
+        os.environ["GEMINI_API_KEY"] = st.secrets["GEMINI_API_KEY"]
+    if "GEMINI_MODEL" in st.secrets and st.secrets["GEMINI_MODEL"]:
+        os.environ["GEMINI_MODEL"] = st.secrets["GEMINI_MODEL"]
+    if "DEBUG" in st.secrets:
+        os.environ["DEBUG"] = str(st.secrets["DEBUG"])
+except Exception:
+    # If secrets are unavailable, continue with .env / OS env
+    pass
+
 from breach_engine.schemas.state import GameState, SuspectState
 from breach_engine.schemas.response import EmotionalState
 from breach_engine.api.gemini_client import GeminiClient
@@ -289,8 +301,34 @@ st.markdown("""
         background: var(--glass-bg);
         border: var(--glass-border);
         padding: 1rem;
-        min-height: 70vh;
         font-family: var(--font-data);
+    }
+
+    /* Style Streamlit's scrollable container for chat messages */
+    [data-testid="stVerticalBlockBorderWrapper"] {
+        background: var(--glass-bg) !important;
+        border: var(--glass-border) !important;
+    }
+
+    /* Scrollbar styling for Streamlit containers */
+    [data-testid="stVerticalBlockBorderWrapper"] > div::-webkit-scrollbar,
+    [data-testid="ScrollToBottomContainer"] > div::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    [data-testid="stVerticalBlockBorderWrapper"] > div::-webkit-scrollbar-track,
+    [data-testid="ScrollToBottomContainer"] > div::-webkit-scrollbar-track {
+        background: var(--void-blue);
+    }
+
+    [data-testid="stVerticalBlockBorderWrapper"] > div::-webkit-scrollbar-thumb,
+    [data-testid="ScrollToBottomContainer"] > div::-webkit-scrollbar-thumb {
+        background: var(--ice-blue-20);
+    }
+
+    [data-testid="stVerticalBlockBorderWrapper"] > div::-webkit-scrollbar-thumb:hover,
+    [data-testid="ScrollToBottomContainer"] > div::-webkit-scrollbar-thumb:hover {
+        background: var(--ice-blue);
     }
 
     .arena-header {
@@ -617,8 +655,10 @@ st.markdown("""
         z-index: 9999;
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: flex-start;
         align-items: center;
+        padding: 2rem 1rem;
+        overflow-y: auto;
         animation: fadeIn 1s ease-out;
     }
 
@@ -831,6 +871,12 @@ def init_session_state():
     if "last_evidence_image_mime" not in st.session_state:
         st.session_state.last_evidence_image_mime = "image/png"
 
+    # Store audio evidence data for multimodal audio understanding (native Gemini)
+    if "last_evidence_audio_data" not in st.session_state:
+        st.session_state.last_evidence_audio_data = None
+    if "last_evidence_audio_mime" not in st.session_state:
+        st.session_state.last_evidence_audio_mime = "audio/mp3"
+
     if "evidence_count" not in st.session_state:
         st.session_state.evidence_count = 0
 
@@ -1012,6 +1058,31 @@ def get_cognitive_bar_html(load: float, level: str) -> str:
 
 
 # ===== COLD INTERFACE: 3-COLUMN LAYOUT RENDERERS =====
+
+def render_case_dossier():
+    """Renders the case file details (Canonical Narrative)."""
+    st.markdown("## 📂 CLASSIFIED CASE FILE")
+
+    st.info("""
+**CASE ID:** #DET-2045-X9
+**SUSPECT:** Unit 734 (Model: SN-7 Synthetic)
+**COMPLAINANT:** The Morrison Estate / Nexus Dynamics
+
+**INCIDENT SUMMARY:**
+On Oct 15, 2045, three encrypted **Data Cores** containing proprietary research were stolen from the Morrison private vault. Value estimated in millions.
+
+**THE ANOMALY:**
+Unit 734 claims it was in "Standby Mode" at its charging station all night (23:00 - 06:00).
+However, forensics recovered a **memory deletion log** timestamped at **03:47 AM**.
+
+**YOUR MISSION:**
+Interrogate Unit 734. Break its alibi. Locate the missing Data Cores.
+
+*WARNING: Suspect is capable of real-time evidence fabrication.*
+""")
+
+    st.divider()
+
 
 def render_suspect_dossier():
     """Render Column 1: Suspect Dossier panel with mugshot, cognitive bar, pillar grid."""
@@ -1203,6 +1274,27 @@ def render_transcript_entry(msg: dict):
             render_evidence_analysis(msg["impact"], msg["analysis"], case_item)
         return
 
+    # Handle audio evidence messages (multimodal audio)
+    if role == "audio_evidence":
+        filename = msg.get("filename", "audio_evidence.mp3")
+        audio_data = msg.get("audio_data")
+        audio_mime = msg.get("audio_mime", "audio/mp3")
+
+        st.markdown(f'''<div class="file-transmission-overlay" style="background: rgba(255, 165, 0, 0.05); border-color: #ffa500;">
+    <div class="label" style="color: #ffa500;">Audio Transmission Intercepted</div>
+    <div style="font-family: var(--font-data); font-size: 0.75rem; color: var(--muted-slate); margin-top: 0.5rem;">
+        🔊 {filename}
+    </div>
+</div>'''.strip(), unsafe_allow_html=True)
+
+        # Display audio player for the intercepted audio
+        if audio_data:
+            st.audio(audio_data, format=audio_mime)
+            st.caption("🎧 Audio ready for Unit 734's analysis on your next message.")
+        else:
+            st.caption("⚠️ Audio data not available for playback.")
+        return
+
     # Detective message
     if role == "detective":
         tactic = msg.get("tactic", "")
@@ -1284,14 +1376,26 @@ def render_transcript_entry(msg: dict):
 
 def render_interrogation_arena():
     """Render Column 2: Interrogation Arena with transcript log style chat."""
-    # Render header as self-contained block
-    st.markdown('''<div class="arena-container" style="min-height: 50vh; padding: 1rem;">
-    <div class="arena-header">Interrogation Transcript</div>
-</div>'''.strip(), unsafe_allow_html=True)
+    # Render header
+    st.markdown('''<div class="arena-header" style="
+        font-family: var(--font-header);
+        font-size: 0.8rem;
+        color: var(--ice-blue);
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        text-align: center;
+        padding: 0.75rem;
+        border-bottom: 1px solid rgba(0, 243, 255, 0.2);
+        margin-bottom: 0.5rem;
+        background: var(--glass-bg);
+    ">Interrogation Transcript</div>'''.strip(), unsafe_allow_html=True)
 
-    # Display chat history in transcript format (each entry is self-contained)
-    for msg in st.session_state.messages:
-        render_transcript_entry(msg)
+    # Create a fixed-height scrollable container for messages
+    # This prevents the chat from pushing the layout down
+    with st.container(height=500):
+        # Display chat history in transcript format
+        for msg in st.session_state.messages:
+            render_transcript_entry(msg)
 
 
 def render_forensics_lab_ui():
@@ -1988,12 +2092,69 @@ line-height: 1.6;
 {narrative_lines}
 </div>""".strip()
 
-    st.markdown(f"""<div class="game-over-overlay">
+    # Render the title/narrative part of game over
+    st.markdown(f"""<div style="
+        background: rgba(11, 16, 22, 0.98);
+        padding: 2rem 1rem;
+        text-align: center;
+    ">
 <div class="{title_class}">{icon} {title_text}</div>
 <div class="game-over-reason">{reason}</div>
 <div class="game-over-subtitle">{subtitle}</div>
 {narrative_html}
-<div class="game-stats">
+</div>""".strip(), unsafe_allow_html=True)
+
+    # === SUPERVISOR DEBRIEF AUDIO (Auto-generated) ===
+    st.markdown("---")
+    st.markdown("### 🎙️ Supervisor Debrief")
+    st.caption("*The Supervisor has analyzed your interrogation performance...*")
+
+    # Auto-generate debrief on first load (cached in session state)
+    if "debrief_audio_data" not in st.session_state:
+        st.session_state.debrief_audio_data = None
+        st.session_state.debrief_script = None
+        st.session_state.debrief_error = None
+
+    # Generate if not yet generated
+    if st.session_state.debrief_audio_data is None and st.session_state.debrief_script is None and st.session_state.debrief_error is None:
+        with st.spinner("Generating supervisor debrief..."):
+            try:
+                from breach_engine.core.supervisor_debrief import SupervisorDebrief
+
+                # Collect session data for analysis
+                session_data = _collect_debrief_data(game_result)
+
+                # Generate audio
+                debrief = SupervisorDebrief()
+                result = debrief.generate_debrief(session_data)
+
+                if result:
+                    audio_bytes, mime_type = result
+                    st.session_state.debrief_audio_data = (audio_bytes, mime_type)
+                else:
+                    # Fallback: try script only
+                    script = debrief.generate_script_only(session_data)
+                    if script:
+                        st.session_state.debrief_script = script
+                    else:
+                        st.session_state.debrief_error = "Debrief generation failed."
+            except Exception as e:
+                st.session_state.debrief_error = str(e)
+
+    # Display the debrief (audio or script)
+    if st.session_state.debrief_audio_data:
+        audio_bytes, mime_type = st.session_state.debrief_audio_data
+        st.audio(audio_bytes, format=mime_type)
+        st.success("Debrief complete.")
+    elif st.session_state.debrief_script:
+        st.info("Audio synthesis unavailable. Script transcript:")
+        st.markdown(f"*{st.session_state.debrief_script}*")
+    elif st.session_state.debrief_error:
+        st.error(f"Debrief error: {st.session_state.debrief_error}")
+
+    # === INTERROGATION STATISTICS ===
+    st.markdown("---")
+    st.markdown(f"""<div class="game-stats" style="max-width: 500px; margin: 0 auto;">
 <h3 style="color: #00ff9d; margin-bottom: 1rem;">📊 INTERROGATION SUMMARY</h3>
 <div class="stat-item">
 <span class="stat-label">Turns Taken</span>
@@ -2019,41 +2180,7 @@ line-height: 1.6;
 <span class="stat-label">Ending</span>
 <span class="stat-value" style="color: {narrative_color};">{ending_type.replace('_', ' ').title()}</span>
 </div>
-</div>
 </div>""".strip(), unsafe_allow_html=True)
-
-    # === SUPERVISOR DEBRIEF AUDIO ===
-    st.markdown("---")
-    st.markdown("### 🎙️ Supervisor Debrief")
-    st.caption("*The Supervisor has analyzed your interrogation performance...*")
-
-    if st.button("▶️ Play Audio Report", key="play_debrief", use_container_width=False):
-        with st.spinner("Generating debrief analysis..."):
-            try:
-                from breach_engine.core.supervisor_debrief import SupervisorDebrief
-
-                # Collect session data for analysis
-                session_data = _collect_debrief_data(game_result)
-
-                # Generate audio
-                debrief = SupervisorDebrief()
-                result = debrief.generate_debrief(session_data)
-
-                if result:
-                    audio_bytes, mime_type = result
-                    # Use correct MIME type for audio player
-                    st.audio(audio_bytes, format=mime_type)
-                    st.success("Debrief complete.")
-                else:
-                    # Fallback: show script only
-                    script = debrief.generate_script_only(session_data)
-                    if script:
-                        st.info("Audio synthesis unavailable. Script transcript:")
-                        st.markdown(f"*{script}*")
-                    else:
-                        st.error("Debrief generation failed. Please try again.")
-            except Exception as e:
-                st.error(f"Debrief error: {e}")
 
     st.markdown("---")
 
@@ -2087,6 +2214,10 @@ line-height: 1.6;
             st.session_state.player_evidence_queue = []
             st.session_state.staged_evidence = None
             st.session_state.attach_evidence = False
+            # Reset debrief state for new game
+            st.session_state.debrief_audio_data = None
+            st.session_state.debrief_script = None
+            st.session_state.debrief_error = None
             st.rerun()
 
 
@@ -2299,6 +2430,14 @@ def get_evidence_items() -> List[Dict]:
     return manifest.get("evidence_items", [])
 
 
+def get_audio_evidence_items() -> List[Dict]:
+    """Get list of available audio evidence items from manifest."""
+    manifest = load_evidence_manifest()
+    if not manifest:
+        return []
+    return manifest.get("audio_evidence_items", [])
+
+
 def render_evidence_gallery():
     """Render the evidence gallery with thumbnails and selection - Cold Interface style."""
     evidence_items = get_evidence_items()
@@ -2431,6 +2570,127 @@ def process_case_evidence(item: Dict, evidence_path: Path):
 
         except Exception as e:
             st.error(f"Error analyzing evidence: {e}")
+
+
+def render_audio_evidence_gallery():
+    """Render the audio evidence gallery - Cold Interface style."""
+    audio_items = get_audio_evidence_items()
+
+    if not audio_items:
+        st.markdown('''<div style="text-align: center; padding: 1rem; color: var(--muted-slate); font-family: var(--font-data); font-size: 0.75rem;">
+No audio evidence files found.
+</div>'''.strip(), unsafe_allow_html=True)
+        return
+
+    st.markdown('''<div style="font-family: var(--font-header); font-size: 0.7rem; color: #ffa500; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.75rem;">
+🔊 Intercepted Audio Transmissions
+</div>'''.strip(), unsafe_allow_html=True)
+
+    # Audio evidence cards
+    for item in audio_items:
+        # Get threat level styling
+        threat_level = item.get("expected_threat_level", 50)
+        if threat_level >= 80:
+            threat_color = "var(--warning-red)"
+            threat_label = "CRITICAL"
+        elif threat_level >= 60:
+            threat_color = "#ffc107"
+            threat_label = "HIGH"
+        else:
+            threat_color = "#00ff9d"
+            threat_label = "MODERATE"
+
+        primary_pillar = item.get("primary_pillar", "unknown").upper()
+
+        # Audio evidence card
+        st.markdown(f'''<div style="
+background: var(--glass-bg);
+border: 1px solid #ffa500;
+padding: 0.75rem;
+margin-bottom: 0.75rem;
+font-family: var(--font-data);
+font-size: 0.75rem;
+box-shadow: 0 0 15px rgba(255, 165, 0, 0.15);
+">
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+<div style="color: #ffa500; font-weight: bold; font-size: 0.8rem;">🔊 {item["display_name"]}</div>
+<div style="
+background: {threat_color};
+color: #000;
+padding: 2px 6px;
+font-size: 0.55rem;
+font-weight: bold;
+text-transform: uppercase;
+letter-spacing: 0.05em;
+">{threat_label}</div>
+</div>
+<div style="color: var(--muted-slate); font-size: 0.7rem; line-height: 1.4; margin-bottom: 0.5rem;">
+{item["description"]}
+</div>
+<div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.65rem;">
+<div style="color: var(--ice-blue);">Duration: {item.get("duration", "Unknown")}</div>
+<div><span style="
+background: var(--ice-blue-10);
+color: var(--muted-slate);
+padding: 2px 6px;
+font-size: 0.55rem;
+text-transform: uppercase;
+letter-spacing: 0.05em;
+">{primary_pillar}</span>
+</div>
+</div>
+</div>'''.strip(), unsafe_allow_html=True)
+
+        # Present audio button
+        if st.button(
+            "🔊 PRESENT AUDIO",
+            key=f"present_audio_{item['id']}",
+            use_container_width=True
+        ):
+            # Load and process the audio evidence
+            audio_path = Path(__file__).parent / "data" / item["filename"]
+            if audio_path.exists():
+                process_case_audio_evidence(item, audio_path)
+            else:
+                st.error(f"Audio file not found: {item['filename']}")
+
+
+def process_case_audio_evidence(item: Dict, audio_path: Path):
+    """Process a piece of audio evidence from the gallery."""
+    # Read audio data
+    with open(audio_path, "rb") as f:
+        audio_data = f.read()
+
+    # Determine mime type from extension
+    ext = audio_path.suffix.lower()
+    mime_map = {
+        ".mp3": "audio/mp3",
+        ".wav": "audio/wav",
+        ".ogg": "audio/ogg",
+        ".m4a": "audio/mp4",
+        ".flac": "audio/flac"
+    }
+    audio_mime = mime_map.get(ext, "audio/mp3")
+
+    # Store audio for multimodal API call
+    st.session_state.last_evidence_audio_data = audio_data
+    st.session_state.last_evidence_audio_mime = audio_mime
+
+    # Add audio evidence to chat history
+    st.session_state.messages.append({
+        "role": "audio_evidence",
+        "audio_data": audio_data,
+        "audio_mime": audio_mime,
+        "filename": item["display_name"],
+        "case_item": item,  # Include case metadata
+    })
+
+    # Increment evidence count
+    st.session_state.evidence_count += 1
+
+    st.success(f"🔊 Audio evidence presented: {item['display_name']}")
+    st.info("Unit 734 will analyze this audio when you send your next message.")
+    st.rerun()
 
 
 def render_tutorial_modal():
@@ -2570,6 +2830,7 @@ def main():
 
     # === COLUMN 1: SUSPECT DOSSIER ===
     with col_dossier:
+        render_case_dossier()
         render_suspect_dossier()
 
         # Control buttons
@@ -2586,6 +2847,8 @@ def main():
             st.session_state.last_evidence_impact = None
             st.session_state.last_evidence_image_data = None
             st.session_state.last_evidence_image_mime = "image/png"
+            st.session_state.last_evidence_audio_data = None
+            st.session_state.last_evidence_audio_mime = "audio/mp3"
             st.session_state.evidence_count = 0
             st.session_state.psychology_history = []
             st.session_state.game_over = False
@@ -2598,6 +2861,10 @@ def main():
             st.session_state.staged_evidence = None
             st.session_state.attach_evidence = False
             st.session_state.analyst_log = []
+            # Reset debrief state for new game
+            st.session_state.debrief_audio_data = None
+            st.session_state.debrief_script = None
+            st.session_state.debrief_error = None
             st.rerun()
 
         if st.button("HOW TO PLAY", use_container_width=True, key="help_btn"):
@@ -2611,14 +2878,14 @@ def main():
 
         # Evidence section (compact tabs)
         with st.expander("PRESENT EVIDENCE", expanded=False):
-            evidence_tab1, evidence_tab2 = st.tabs(["Case Files", "Upload"])
+            evidence_tab1, evidence_tab2, evidence_tab3 = st.tabs(["Case Files", "Upload Image", "Upload Audio"])
 
             with evidence_tab1:
                 render_evidence_gallery()
 
             with evidence_tab2:
                 uploaded_file = st.file_uploader(
-                    "Upload Evidence",
+                    "Upload Image Evidence",
                     type=['png', 'jpg', 'jpeg', 'gif', 'webp'],
                     key=f"evidence_uploader_{st.session_state.evidence_count}",
                     label_visibility="collapsed"
@@ -2652,6 +2919,50 @@ def main():
 
                         except Exception as e:
                             st.error(f"Error: {e}")
+
+            with evidence_tab3:
+                # Show audio gallery first
+                render_audio_evidence_gallery()
+
+                st.markdown("---")
+
+                # MULTIMODAL AUDIO EVIDENCE - Native Gemini audio understanding
+                st.caption("Or upload your own audio file:")
+                uploaded_audio = st.file_uploader(
+                    "Upload Audio Evidence",
+                    type=['mp3', 'wav', 'ogg', 'm4a', 'flac'],
+                    key=f"audio_evidence_uploader_{st.session_state.evidence_count}",
+                    label_visibility="collapsed"
+                )
+
+                if uploaded_audio is not None:
+                    audio_data = uploaded_audio.read()
+                    audio_mime = uploaded_audio.type or "audio/mp3"
+
+                    # Map common extensions to proper MIME types
+                    mime_map = {
+                        "audio/mpeg": "audio/mp3",
+                        "audio/x-wav": "audio/wav",
+                        "audio/x-m4a": "audio/mp4",
+                    }
+                    audio_mime = mime_map.get(audio_mime, audio_mime)
+
+                    # Store audio for multimodal API call
+                    st.session_state.last_evidence_audio_data = audio_data
+                    st.session_state.last_evidence_audio_mime = audio_mime
+
+                    # Add audio evidence to chat history with player display
+                    st.session_state.messages.append({
+                        "role": "audio_evidence",
+                        "audio_data": audio_data,
+                        "audio_mime": audio_mime,
+                        "filename": uploaded_audio.name,
+                    })
+                    st.session_state.evidence_count += 1
+
+                    st.success(f"Audio evidence uploaded: {uploaded_audio.name}")
+                    st.info("Unit 734 will analyze this audio when you send your next message.")
+                    st.rerun()
 
         # Forensics Lab (moved here - most used after chat)
         render_forensics_lab_ui()
@@ -2820,6 +3131,15 @@ def main():
                         evidence_image_data = st.session_state.get("last_evidence_image_data")
                         evidence_image_mime = st.session_state.get("last_evidence_image_mime", "image/png")
 
+                        # MULTIMODAL AUDIO: Pass audio data so Unit 734 can "hear" it
+                        # Uses native Gemini audio understanding (NOT speech-to-text)
+                        evidence_audio_data = st.session_state.get("last_evidence_audio_data")
+                        evidence_audio_mime = st.session_state.get("last_evidence_audio_mime", "audio/mp3")
+
+                        # Log audio analysis to Shadow Analyst HUD
+                        if evidence_audio_data:
+                            add_analyst_log_entry("opportunity", "AUDIO ANALYZED BY UNIT 734")
+
                         response = st.session_state.gemini_client.generate_response(
                             player_message=prompt,
                             conversation_context=conversation_context,
@@ -2827,6 +3147,8 @@ def main():
                             prompt_modifiers=prompt_modifiers,
                             evidence_image_data=evidence_image_data,
                             evidence_image_mime=evidence_image_mime,
+                            evidence_audio_data=evidence_audio_data,
+                            evidence_audio_mime=evidence_audio_mime,
                         )
 
                         # PIPELINE FIX #1: Apply threat-level damage to pillars
@@ -2839,8 +3161,9 @@ def main():
                                 # Add to analyst log for visibility
                                 add_analyst_log_entry("warning", f"PILLAR DAMAGE: {evidence_pillar.value.upper()}")
 
-                        # Clear the evidence image after use (one-time reveal)
+                        # Clear the evidence after use (one-time reveal)
                         st.session_state.last_evidence_image_data = None
+                        st.session_state.last_evidence_audio_data = None
 
                         # Update game state from response
                         state_changes = response.state_changes
@@ -2890,18 +3213,48 @@ def main():
                             # Extract player's evidence timestamp for counter-evidence matching
                             player_evidence_desc = None
                             player_timestamp = None
+                            player_evidence_type = None
+                            player_evidence_location = None
+                            player_evidence_time_ref = None
+                            player_evidence_summary = None
+                            player_detected_objects = []
+                            player_critical_elements = []
+                            pov_suggestion = None
+                            pov_hook = None
 
                             if attached_evidence:
                                 # Get time_reference directly from the evidence record
                                 evidence_record = attached_evidence.get("evidence")
                                 if evidence_record and hasattr(evidence_record, 'time_reference'):
                                     player_timestamp = evidence_record.time_reference
-                                    player_evidence_desc = f"Evidence from {player_timestamp}"
+                                    player_evidence_time_ref = evidence_record.time_reference
+                                    player_evidence_location = getattr(evidence_record, "location", None)
+                                    player_evidence_type = getattr(evidence_record, "evidence_type", None)
+                                    if player_evidence_type is not None and hasattr(player_evidence_type, "value"):
+                                        player_evidence_type = player_evidence_type.value
+                                    # Use the original request text as the richest description.
+                                    player_evidence_desc = getattr(evidence_record, "request_text", None) or f"Evidence from {player_timestamp}"
+                                    player_evidence_summary = getattr(evidence_record, "request_text", None) or getattr(evidence_record, "generation_prompt", None)
                                     print(f"[COUNTER-EVIDENCE] Player timestamp from evidence: {player_timestamp}")
 
                             # Fallback to parsing from the player's message
                             if not player_timestamp and prompt:
                                 player_evidence_desc = prompt
+
+                            # If we have last analyzed evidence (case file / upload), use its details.
+                            if not attached_evidence and st.session_state.last_evidence_impact:
+                                analysis = st.session_state.last_evidence_impact.analysis_result
+                                if analysis:
+                                    player_evidence_type = getattr(analysis.evidence_type, "value", None)
+                                    player_evidence_summary = getattr(analysis, "analysis_summary", None)
+                                    player_detected_objects = [obj.name for obj in getattr(analysis, "detected_objects", [])]
+                                    # Use POVFormatter's critical elements / counter suggestion when available.
+                                    player_critical_elements = []
+                                    pov = getattr(manager, "_last_pov_perception", None)
+                                    if pov:
+                                        player_critical_elements = list(getattr(pov, "critical_elements", []) or [])
+                                        pov_suggestion = getattr(pov, "suggested_counter_type", None)
+                                        pov_hook = getattr(pov, "counter_narrative_hook", None)
 
                             # Create fabrication context from game state
                             fab_context = create_fabrication_context(
@@ -2909,7 +3262,25 @@ def main():
                                 cognitive_load=manager.psychology.cognitive.load,
                                 player_evidence_description=player_evidence_desc,
                                 player_evidence_timestamp=player_timestamp,
+                                player_evidence_type=player_evidence_type,
+                                player_evidence_location=player_evidence_location,
+                                player_evidence_time_reference=player_evidence_time_ref,
+                                player_evidence_summary=player_evidence_summary,
+                                player_detected_objects=player_detected_objects,
+                                player_critical_elements=player_critical_elements,
+                                pov_counter_suggestion=pov_suggestion,
+                                pov_counter_hook=pov_hook,
+                                current_deception_tactic=(
+                                    processed.deception_tactic.selected_tactic.value
+                                    if processed.deception_tactic else None
+                                ),
                             )
+
+                            # Feed prior fabrications so the generator can avoid repeating the same
+                            # counter-evidence type / phrasing over and over within a session.
+                            fab_context.previous_fabrications = [
+                                fab.evidence_type for fab in getattr(manager, "fabrication_history", [])
+                            ]
 
                             # Generate counter-evidence
                             counter_evidence = manager.visual_generator.generate_counter_evidence(fab_context)
@@ -2920,6 +3291,9 @@ def main():
 
                             # Add counter-evidence to chat
                             if counter_evidence.image_data:
+                                # Track for variety/consistency on future fabrications.
+                                manager.fabrication_history.append(counter_evidence)
+
                                 st.session_state.messages.append({
                                     "role": "counter_evidence",
                                     "counter_evidence": counter_evidence,

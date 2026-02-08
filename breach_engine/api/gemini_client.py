@@ -112,19 +112,22 @@ class GeminiClient:
     Now supports dynamic prompt injection from BreachManager.
     """
 
-    def __init__(self, api_key: Optional[str] = None, model_name: str = "gemini-3-flash-preview"):
+    def __init__(self, api_key: Optional[str] = None, model_name: Optional[str] = None):
         """
         Initialize the Gemini client.
 
         Args:
             api_key: Gemini API key (falls back to GEMINI_API_KEY env var)
-            model_name: Model to use (default: gemini-3-flash-preview with Thinking capability)
+            model_name: Model to use (defaults to GEMINI_MODEL or gemini-3-flash-preview)
         """
         self.api_key = api_key or os.getenv("GEMINI_API_KEY")
         if not self.api_key:
             raise ValueError("GEMINI_API_KEY not provided")
 
         genai.configure(api_key=self.api_key)
+
+        if model_name is None:
+            model_name = os.getenv("GEMINI_MODEL", "gemini-3-flash-preview")
 
         self.model_name = model_name
         self.model = genai.GenerativeModel(
@@ -146,6 +149,8 @@ class GeminiClient:
         prompt_modifiers: Dict[str, Any],
         evidence_image_data: Optional[bytes] = None,
         evidence_image_mime: str = "image/png",
+        evidence_audio_data: Optional[bytes] = None,
+        evidence_audio_mime: str = "audio/mp3",
     ) -> BreachResponse:
         """
         Generate Unit 734's response with psychology-aware prompting.
@@ -157,6 +162,8 @@ class GeminiClient:
             prompt_modifiers: Psychology modifiers from BreachManager
             evidence_image_data: Optional image bytes for Unit 734 to "see"
             evidence_image_mime: MIME type of the evidence image
+            evidence_audio_data: Optional audio bytes for Unit 734 to "hear"
+            evidence_audio_mime: MIME type of the audio evidence (audio/mp3, audio/wav)
 
         Returns:
             BreachResponse with internal monologue and verbal response
@@ -172,6 +179,10 @@ class GeminiClient:
         # Store evidence image for multimodal API call
         self._current_evidence_image = evidence_image_data
         self._current_evidence_mime = evidence_image_mime
+
+        # Store evidence audio for multimodal API call (native Gemini audio understanding)
+        self._current_evidence_audio = evidence_audio_data
+        self._current_evidence_audio_mime = evidence_audio_mime
 
         # DEBUG: Log deception tactic if present
         deception_tactic = prompt_modifiers.get("deception_tactic")
@@ -298,40 +309,63 @@ class GeminiClient:
         """Make API call with automatic retry on transient failures.
 
         If evidence image is present, includes it for multimodal analysis.
-        Unit 734 can now literally "see" evidence presented by the detective.
+        If evidence audio is present, includes it for native audio understanding.
+        Unit 734 can now literally "see" and "hear" evidence presented by the detective.
         """
         import base64
 
-        # Check if we have an evidence image to include
+        # Check if we have evidence media to include
         evidence_image = getattr(self, '_current_evidence_image', None)
-        evidence_mime = getattr(self, '_current_evidence_mime', 'image/png')
+        evidence_image_mime = getattr(self, '_current_evidence_mime', 'image/png')
+        evidence_audio = getattr(self, '_current_evidence_audio', None)
+        evidence_audio_mime = getattr(self, '_current_evidence_audio_mime', 'audio/mp3')
 
+        # Build multimodal content parts
+        content_parts = []
+
+        # Add audio evidence if present (native Gemini audio understanding)
+        if evidence_audio:
+            print(f"[GEMINI_CLIENT] Multimodal mode: Including audio evidence ({len(evidence_audio)} bytes, {evidence_audio_mime})")
+            audio_b64 = base64.b64encode(evidence_audio).decode('utf-8')
+            content_parts.append({
+                "inline_data": {
+                    "mime_type": evidence_audio_mime,
+                    "data": audio_b64,
+                }
+            })
+
+        # Add image evidence if present
         if evidence_image:
-            # MULTIMODAL: Unit 734 "sees" the evidence image
             print(f"[GEMINI_CLIENT] Multimodal mode: Including evidence image ({len(evidence_image)} bytes)")
-
-            # Encode image to base64 for API
             image_b64 = base64.b64encode(evidence_image).decode('utf-8')
+            content_parts.append({
+                "inline_data": {
+                    "mime_type": evidence_image_mime,
+                    "data": image_b64,
+                }
+            })
 
-            # Build multimodal content with proper inline_data format
-            content = [
-                {
-                    "inline_data": {
-                        "mime_type": evidence_mime,
-                        "data": image_b64,
-                    }
-                },
-                prompt,
-            ]
+        # Add the text prompt
+        content_parts.append(prompt)
 
+        # Determine timeout based on media type (audio takes longer)
+        if evidence_audio:
+            timeout = 90  # Longer timeout for audio processing
+        elif evidence_image:
+            timeout = 60  # Vision timeout
+        else:
+            timeout = 45  # Text-only timeout
+
+        if len(content_parts) > 1:
+            # MULTIMODAL: Unit 734 can "see" and/or "hear" evidence
             return self.model.generate_content(
-                content,
+                content_parts,
                 generation_config=genai.GenerationConfig(
                     response_mime_type="application/json",
                     temperature=0.85,
                     max_output_tokens=4096,  # Increased for complex responses
                 ),
-                request_options={"timeout": 60}  # Longer timeout for vision
+                request_options={"timeout": timeout}
             )
         else:
             # Text-only mode (no evidence presented)
@@ -342,7 +376,7 @@ class GeminiClient:
                     temperature=0.85,
                     max_output_tokens=4096,  # Increased for complex responses
                 ),
-                request_options={"timeout": 45}  # Increased from 30s
+                request_options={"timeout": timeout}
             )
 
     def _get_fallback_response(

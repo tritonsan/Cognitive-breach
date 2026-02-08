@@ -41,7 +41,7 @@
       "filename": "evidence_forensic_link.png",
       "display_name": "Biocomponent Trace Analysis",
       "short_name": "Forensics",
-      "description": "Trace analysis from the vault interior found microscopic biocomponent residue matching RK-900 series Androids. Unit 734 is the only RK-900 in the household.",
+      "description": "Trace analysis from the vault interior found microscopic biocomponent residue matching SN-7 series Synthetics. Unit 734 is the only SN-7 in the household.",
       "hint": "Physical evidence placing Unit 734 inside the vault.",
       "primary_pillar": "alibi",
       "secondary_pillars": ["access"],
@@ -118,5 +118,41 @@
     "access": ["evidence_forced_access", "evidence_forensic_link", "evidence_murder_weapon"],
     "knowledge": ["evidence_hidden_logs", "evidence_stolen_goods", "evidence_forced_access"],
     "motive": ["evidence_stolen_goods", "evidence_murder_weapon"]
-  }
+  },
+  "audio_evidence_items": [
+    {
+      "id": "audio_ghost_relay",
+      "filename": "GHOST_RELAY_INTERCEPT_UNK.mp3",
+      "display_name": "Intercepted Ghost Relay",
+      "short_name": "Ghost Relay",
+      "description": "Encrypted audio transmission intercepted from an unknown source. Contains distorted voice patterns that may match Unit 734's vocal signature.",
+      "hint": "Audio analysis may reveal Unit 734's involvement in covert communications.",
+      "primary_pillar": "knowledge",
+      "secondary_pillars": ["alibi", "motive"],
+      "expected_threat_level": 70,
+      "duration": "~12 seconds",
+      "interrogation_tips": [
+        "Play this after establishing technical capabilities",
+        "Watch for recognition patterns",
+        "Ask about communication protocols"
+      ]
+    },
+    {
+      "id": "audio_core_dump",
+      "filename": "SYS_CORE_DUMP_0347_RECOVERED.mp3",
+      "display_name": "System Core Dump Recovery",
+      "short_name": "Core Dump",
+      "description": "Recovered system diagnostic audio from Unit 734's supposedly 'corrupted' memory core. Contains timestamped status updates that contradict the standby alibi.",
+      "hint": "Unit 734's own internal logs, captured as audio data, tell a different story.",
+      "primary_pillar": "alibi",
+      "secondary_pillars": ["knowledge"],
+      "expected_threat_level": 85,
+      "duration": "~13 seconds",
+      "interrogation_tips": [
+        "Critical evidence - Unit 734's own voice logs",
+        "Use after they claim memory corruption",
+        "This is their internal system speaking"
+      ]
+    }
+  ]
 }
