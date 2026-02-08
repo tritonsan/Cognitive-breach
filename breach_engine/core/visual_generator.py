@@ -118,13 +118,27 @@ class FabricationContext:
     # If player shows 3:12 AM footage, counter-evidence MUST cover 3:12 AM
     player_evidence_timestamp: Optional[str] = None
 
+    # Metadata about the evidence being countered (used to pick a logical counter).
+    # Note: values may come from EvidenceAnalyzer (e.g. "security_footage", "forensic")
+    # or ForensicsLab request types (e.g. "cctv_footage", "access_log").
+    player_evidence_type: Optional[str] = None
+    player_evidence_location: Optional[str] = None
+    player_evidence_time_reference: Optional[str] = None
+    player_evidence_summary: Optional[str] = None
+    player_detected_objects: List[str] = field(default_factory=list)
+    player_critical_elements: List[str] = field(default_factory=list)
+
+    # POVFormatter suggestion (if available from evidence analysis)
+    pov_counter_suggestion: Optional[str] = None
+    pov_counter_hook: Optional[str] = None
+
     # Player's original image (if editing)
     player_image_data: Optional[bytes] = None
     player_image_mime: Optional[str] = None
 
     # Current cover story elements
     alibi_location: str = "charging station in maintenance bay"
-    alibi_time: str = "11 PM to 3:15 AM"
+    alibi_time: str = "11 PM to 6 AM"
     claimed_activity: str = "performing routine self-diagnostics"
 
     # Unit 734's psychological state
@@ -342,6 +356,10 @@ class VisualGenerator:
         # Track generation history for this session
         self.generation_history: List[Dict[str, Any]] = []
 
+        # Track wrapper templates used per strategy to avoid repetitive phrasing.
+        # Key: CounterEvidenceType.value, Value: list of wrapper templates (NOT time-substituted).
+        self._wrapper_history: Dict[str, List[str]] = {}
+
     def _get_client(self):
         """Lazy-load the Gemini client for image generation."""
         if self._client is None:
@@ -453,6 +471,41 @@ class VisualGenerator:
         Returns:
             Tuple of (selected strategy, risk level)
         """
+        def _map_pov_suggestion_to_strategy(s: Optional[str]) -> Optional[CounterEvidenceType]:
+            s = (s or "").strip().lower()
+            if s in ("optical_log", "optical", "memory_playback"):
+                return CounterEvidenceType.MODIFIED_TIMESTAMP
+            if s in ("diagnostic_display", "diagnostic", "access_log_display"):
+                return CounterEvidenceType.FAKE_DOCUMENT
+            return None
+
+        def _map_evidence_type_to_preferred(e: Optional[str]) -> Optional[CounterEvidenceType]:
+            e = (e or "").strip().lower()
+
+            # EvidenceAnalyzer types
+            if e in ("security_footage", "witness"):
+                return CounterEvidenceType.MODIFIED_TIMESTAMP
+            if e == "forensic":
+                return CounterEvidenceType.PHYSICAL_COUNTER
+            if e == "document":
+                return CounterEvidenceType.FAKE_DOCUMENT
+            if e == "location":
+                return CounterEvidenceType.PHYSICAL_COUNTER
+            if e in ("tool", "data_storage"):
+                return CounterEvidenceType.CORRUPTED_DATA
+
+            # ForensicsLab request types
+            if e in ("cctv_footage", "witness_photo"):
+                return CounterEvidenceType.MODIFIED_TIMESTAMP
+            if e == "forensic_analysis":
+                return CounterEvidenceType.PHYSICAL_COUNTER
+            if e in ("document_scan", "access_log", "communication_record"):
+                return CounterEvidenceType.FAKE_DOCUMENT
+            if e == "technical_schematic":
+                return CounterEvidenceType.FAKE_DOCUMENT
+
+            return None
+
         # Get strategies for threatened pillar
         if context.threatened_pillar:
             strategies = PILLAR_TO_COUNTER_STRATEGY.get(
@@ -463,13 +516,53 @@ class VisualGenerator:
             # Default strategy when no specific pillar threatened
             strategies = [CounterEvidenceType.FAKE_DOCUMENT]
 
-        # Select based on context
-        selected = strategies[0]  # Primary strategy
+        # Prefer a strategy that matches the evidence being countered.
+        preferred = None
+        if context.pov_counter_suggestion:
+            preferred = _map_pov_suggestion_to_strategy(context.pov_counter_suggestion)
+        if preferred is None and context.player_evidence_type:
+            preferred = _map_evidence_type_to_preferred(context.player_evidence_type)
 
-        # Adjust for player evidence
+        if preferred is not None:
+            if preferred in strategies:
+                strategies = [preferred] + [s for s in strategies if s != preferred]
+            else:
+                # Allow preferred even if not in the pillar mapping (evidence-type match wins).
+                strategies = [preferred] + strategies
+
+        # Prefer variety across the session: avoid repeating the same counter-evidence
+        # type when we have reasonable alternatives for the threatened pillar.
+        previous = context.previous_fabrications or []
+        prev_set = set(previous)
+
+        candidates = strategies
+
+        # If player uploaded an image, try to counter it directly.
+        # Still allow fallback variety if we've already used CORRUPTED_DATA repeatedly.
         if context.player_image_data:
-            # If player uploaded image, try to counter it directly
-            selected = CounterEvidenceType.CORRUPTED_DATA
+            candidates = [CounterEvidenceType.CORRUPTED_DATA]
+
+        # Avoid any previously used types if possible.
+        not_used = [s for s in candidates if s.value not in prev_set]
+        if not_used:
+            candidates = not_used
+
+        # Avoid immediate repetition if we can.
+        if previous and len(candidates) > 1 and candidates[0].value == previous[-1]:
+            candidates = candidates[1:] + candidates[:1]
+
+        # Special-case: for CCTV/security footage, alternating between optical-log styles
+        # keeps variety while still staying logically "on topic".
+        if context.player_evidence_type:
+            et = context.player_evidence_type.lower()
+            if et in ("security_footage", "cctv_footage", "witness", "witness_photo"):
+                if previous and candidates and candidates[0].value == previous[-1]:
+                    # If we still ended up repeating, try swapping to an alternative POV option.
+                    alt = CounterEvidenceType.ALTERNATIVE_SCENE
+                    if alt in candidates:
+                        candidates = [alt] + [c for c in candidates if c != alt]
+
+        selected = candidates[0]
 
         # Calculate risk based on desperation
         if context.desperation_level > 0.8:
@@ -506,16 +599,64 @@ class VisualGenerator:
         # PIVOT LAG FIX: Compute HUD status based on Unit 734's current narrative
         hud_status, neural_color, neural_state, pov_location, scene_view = self._compute_narrative_sync(context)
 
+        # Tailor document/report content to the specific evidence being countered.
+        player_summary = (context.player_evidence_summary or context.player_evidence_description or "").strip()
+        if len(player_summary) > 220:
+            player_summary = player_summary[:220] + "..."
+
+        player_bits = []
+        if context.player_evidence_location:
+            player_bits.append(f"Location: {context.player_evidence_location}")
+        if context.player_evidence_time_reference:
+            player_bits.append(f"Time: {context.player_evidence_time_reference}")
+        for el in (context.player_critical_elements or [])[:3]:
+            player_bits.append(f"Note: {el}")
+        player_bits_text = " | ".join(player_bits)
+
+        doc_type = "Maintenance Log"
+        if context.player_evidence_type:
+            et = context.player_evidence_type.lower()
+            if et in ("communication_record",):
+                doc_type = "Encrypted Telemetry Header Report"
+            elif et in ("access_log",):
+                doc_type = "Access Permission Audit"
+            elif et in ("technical_schematic",):
+                doc_type = "Power Telemetry Report"
+            elif et in ("document_scan", "document"):
+                doc_type = "Operations Log Addendum"
+            elif et in ("forensic_analysis", "forensic"):
+                doc_type = "Forensic Comparison Report"
+            elif et in ("cctv_footage", "security_footage"):
+                doc_type = "Optical Log Index"
+
+        doc_content = f"Unit 734 - Routine maintenance cycle, {context.alibi_time}."
+        if player_summary:
+            doc_content += f" Re: {player_summary}."
+        if player_bits_text:
+            doc_content += f" {player_bits_text}."
+
+        evidence_type_label = "Footprint pattern"
+        if context.player_evidence_type:
+            et = context.player_evidence_type.lower()
+            if et in ("forensic", "forensic_analysis"):
+                evidence_type_label = "Fingerprint ridge pattern"
+            elif et in ("technical_schematic",):
+                evidence_type_label = "Power draw telemetry graph"
+            elif et in ("access_log",):
+                evidence_type_label = "Door access log timeline"
+            elif et in ("communication_record",):
+                evidence_type_label = "Packet header trace"
+
         # Build substitution dict
         subs = {
             "style": BASE_STYLE,
             "timestamp": self._generate_alibi_timestamp(context),
             "location": context.alibi_location,
             "scene_description": f"Android in {context.claimed_activity}",
-            "document_type": "Maintenance Log",
+            "document_type": doc_type,
             "date": "2087-03-14",  # Game date
-            "content": f"Unit 734 - Routine maintenance cycle, {context.alibi_time}",
-            "evidence_type": "Footprint pattern",
+            "content": doc_content,
+            "evidence_type": evidence_type_label,
             "time": context.alibi_time.split(" to ")[0] if " to " in context.alibi_time else context.alibi_time,
             # PIVOT LAG FIX: Dynamic HUD elements
             "hud_status": hud_status,
@@ -680,16 +821,32 @@ class VisualGenerator:
             ["Here is evidence that contradicts your claim."]
         )
 
-        # Select based on desperation (more desperate = more defensive language)
-        if context.desperation_level > 0.6:
-            # Use more aggressive wrappers (later in list)
-            wrapper = wrappers[-1] if len(wrappers) > 1 else wrappers[0]
+        # Select based on desperation (more desperate = more defensive language),
+        # but avoid repeating the exact same phrasing across turns.
+        if context.desperation_level > 0.75 and len(wrappers) > 2:
+            allowed = wrappers[-2:]
+        elif context.desperation_level > 0.6 and len(wrappers) > 1:
+            allowed = wrappers[1:]
         else:
-            wrapper = wrappers[0]
+            allowed = wrappers
+
+        used = self._wrapper_history.get(strategy.value, [])
+        recent = set(used[-2:])  # avoid last 2 templates repeating back-to-back
+        candidates = [w for w in allowed if w not in recent]
+
+        if candidates:
+            # Rotate deterministically so logs are stable but non-repetitive.
+            idx = len(used) % len(candidates)
+            template = candidates[idx]
+        else:
+            # All allowed wrappers were used recently; cycle through allowed list.
+            template = allowed[len(used) % len(allowed)]
+
+        self._wrapper_history.setdefault(strategy.value, []).append(template)
 
         # Apply time substitution
         time_str = context.alibi_time.split(" to ")[0] if " to " in context.alibi_time else context.alibi_time
-        wrapper = wrapper.replace("{time}", time_str)
+        wrapper = template.replace("{time}", time_str)
 
         return wrapper
 
@@ -753,6 +910,7 @@ class VisualGenerator:
             "risk": risk.value,
             "confidence": evidence.fabrication_confidence,
             "threatened_pillar": context.threatened_pillar.value if context.threatened_pillar else None,
+            "wrapper": evidence.narrative_wrapper,
         })
 
         return evidence
@@ -1010,9 +1168,17 @@ class VisualGenerator:
 def create_fabrication_context(
     threatened_pillar: Optional[StoryPillar],
     cognitive_load: float,
-    alibi_time: str = "11 PM to 3:15 AM",
+    alibi_time: str = "11 PM to 6 AM",
     player_evidence_description: Optional[str] = None,
     player_evidence_timestamp: Optional[str] = None,
+    player_evidence_type: Optional[str] = None,
+    player_evidence_location: Optional[str] = None,
+    player_evidence_time_reference: Optional[str] = None,
+    player_evidence_summary: Optional[str] = None,
+    player_detected_objects: Optional[List[str]] = None,
+    player_critical_elements: Optional[List[str]] = None,
+    pov_counter_suggestion: Optional[str] = None,
+    pov_counter_hook: Optional[str] = None,
     current_deception_tactic: Optional[str] = None,
     has_admitted_movement: bool = False,
 ) -> FabricationContext:
@@ -1038,7 +1204,7 @@ def create_fabrication_context(
     # These tactics typically involve admitting presence but minimizing intent
     movement_admitting_tactics = {
         "confession_bait", "minimization", "deflection",
-        "righteous_indignation", "evidence_fabrication"
+        "righteous_indignation"
     }
     # Lower threshold: At stress > 50% with these tactics, Unit 734 is likely pivoting
     # At stress > 35% if using deflection (early pivot)
@@ -1053,6 +1219,14 @@ def create_fabrication_context(
         desperation_level=desperation,
         player_evidence_description=player_evidence_description,
         player_evidence_timestamp=player_evidence_timestamp,
+        player_evidence_type=player_evidence_type,
+        player_evidence_location=player_evidence_location,
+        player_evidence_time_reference=player_evidence_time_reference,
+        player_evidence_summary=player_evidence_summary,
+        player_detected_objects=player_detected_objects or [],
+        player_critical_elements=player_critical_elements or [],
+        pov_counter_suggestion=pov_counter_suggestion,
+        pov_counter_hook=pov_counter_hook,
         current_deception_tactic=current_deception_tactic,
         has_admitted_movement=has_admitted_movement,
     )

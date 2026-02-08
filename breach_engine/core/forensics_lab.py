@@ -95,7 +95,7 @@ CASE_FACTS = {
     "location": "Morrison Estate",
     "suspect": "Unit 734 (SN-7 Series)",
     "stolen_items": "Three quantum data cores",
-    "alibi_claim": "In charging bay from 11 PM to 3:15 AM",
+    "alibi_claim": "In charging bay from 11 PM to 6:00 AM",
 }
 
 

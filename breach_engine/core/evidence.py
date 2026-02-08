@@ -190,7 +190,7 @@ Analyze this image as if it were evidence in a criminal investigation.
 ## THE CASE
 An Android (Unit 734) is suspected of stealing data cores from a wealthy family's estate.
 Unit 734 claims:
-- ALIBI: They were in "standby mode" from 11 PM to 6 AM (never moved)
+- ALIBI: They were docked in "standby/maintenance" from 11 PM to 6 AM (never left the charging alcove)
 - MOTIVE: They had no reason to steal (loyal to the family)
 - ACCESS: They don't have vault access codes
 - KNOWLEDGE: They don't know what the data cores contain

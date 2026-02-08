@@ -1916,7 +1916,7 @@ class BreachManager:
         context = create_fabrication_context(
             threatened_pillar=tactic_decision.trigger.pillar_threatened,
             cognitive_load=self.psychology.cognitive.load,
-            alibi_time="11 PM to 3:15 AM",  # Unit 734's claimed alibi
+            alibi_time="11 PM to 6 AM",  # Unit 734's claimed alibi
             current_deception_tactic=tactic_decision.selected_tactic.value,
         )
 

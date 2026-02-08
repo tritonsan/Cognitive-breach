@@ -3213,18 +3213,48 @@ def main():
                             # Extract player's evidence timestamp for counter-evidence matching
                             player_evidence_desc = None
                             player_timestamp = None
+                            player_evidence_type = None
+                            player_evidence_location = None
+                            player_evidence_time_ref = None
+                            player_evidence_summary = None
+                            player_detected_objects = []
+                            player_critical_elements = []
+                            pov_suggestion = None
+                            pov_hook = None
 
                             if attached_evidence:
                                 # Get time_reference directly from the evidence record
                                 evidence_record = attached_evidence.get("evidence")
                                 if evidence_record and hasattr(evidence_record, 'time_reference'):
                                     player_timestamp = evidence_record.time_reference
-                                    player_evidence_desc = f"Evidence from {player_timestamp}"
+                                    player_evidence_time_ref = evidence_record.time_reference
+                                    player_evidence_location = getattr(evidence_record, "location", None)
+                                    player_evidence_type = getattr(evidence_record, "evidence_type", None)
+                                    if player_evidence_type is not None and hasattr(player_evidence_type, "value"):
+                                        player_evidence_type = player_evidence_type.value
+                                    # Use the original request text as the richest description.
+                                    player_evidence_desc = getattr(evidence_record, "request_text", None) or f"Evidence from {player_timestamp}"
+                                    player_evidence_summary = getattr(evidence_record, "request_text", None) or getattr(evidence_record, "generation_prompt", None)
                                     print(f"[COUNTER-EVIDENCE] Player timestamp from evidence: {player_timestamp}")
 
                             # Fallback to parsing from the player's message
                             if not player_timestamp and prompt:
                                 player_evidence_desc = prompt
+
+                            # If we have last analyzed evidence (case file / upload), use its details.
+                            if not attached_evidence and st.session_state.last_evidence_impact:
+                                analysis = st.session_state.last_evidence_impact.analysis_result
+                                if analysis:
+                                    player_evidence_type = getattr(analysis.evidence_type, "value", None)
+                                    player_evidence_summary = getattr(analysis, "analysis_summary", None)
+                                    player_detected_objects = [obj.name for obj in getattr(analysis, "detected_objects", [])]
+                                    # Use POVFormatter's critical elements / counter suggestion when available.
+                                    player_critical_elements = []
+                                    pov = getattr(manager, "_last_pov_perception", None)
+                                    if pov:
+                                        player_critical_elements = list(getattr(pov, "critical_elements", []) or [])
+                                        pov_suggestion = getattr(pov, "suggested_counter_type", None)
+                                        pov_hook = getattr(pov, "counter_narrative_hook", None)
 
                             # Create fabrication context from game state
                             fab_context = create_fabrication_context(
@@ -3232,7 +3262,25 @@ def main():
                                 cognitive_load=manager.psychology.cognitive.load,
                                 player_evidence_description=player_evidence_desc,
                                 player_evidence_timestamp=player_timestamp,
+                                player_evidence_type=player_evidence_type,
+                                player_evidence_location=player_evidence_location,
+                                player_evidence_time_reference=player_evidence_time_ref,
+                                player_evidence_summary=player_evidence_summary,
+                                player_detected_objects=player_detected_objects,
+                                player_critical_elements=player_critical_elements,
+                                pov_counter_suggestion=pov_suggestion,
+                                pov_counter_hook=pov_hook,
+                                current_deception_tactic=(
+                                    processed.deception_tactic.selected_tactic.value
+                                    if processed.deception_tactic else None
+                                ),
                             )
+
+                            # Feed prior fabrications so the generator can avoid repeating the same
+                            # counter-evidence type / phrasing over and over within a session.
+                            fab_context.previous_fabrications = [
+                                fab.evidence_type for fab in getattr(manager, "fabrication_history", [])
+                            ]
 
                             # Generate counter-evidence
                             counter_evidence = manager.visual_generator.generate_counter_evidence(fab_context)
@@ -3243,6 +3291,9 @@ def main():
 
                             # Add counter-evidence to chat
                             if counter_evidence.image_data:
+                                # Track for variety/consistency on future fabrications.
+                                manager.fabrication_history.append(counter_evidence)
+
                                 st.session_state.messages.append({
                                     "role": "counter_evidence",
                                     "counter_evidence": counter_evidence,
